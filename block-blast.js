@@ -1568,7 +1568,7 @@
         ctx.save()
 
         // Background
-        ctx.fillStyle = rainbowed//COLORS.BLACK
+        ctx.fillStyle = COLORS.BLACK
         ctx.fillRect(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
 
         // Center divider (Net) - Not strictly centered, but positioned
