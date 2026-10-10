@@ -1277,7 +1277,7 @@
         }
         //rainbow color
         colorTimer+=dt
-        rainbowed = rainbow(colorTimer/3000)
+        rainbowed = rainbow(colorTimer*1000)
 
         // Paddle movement
         paddle.dy = 0
