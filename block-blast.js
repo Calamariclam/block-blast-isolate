@@ -47,6 +47,16 @@
     const BLOCKING_SPEED = 190
 
     /* --- COLORS --- */
+    function rainbow(n){
+        //cycle is completed every 3n
+        let tp = 2 * Math.PI / 3
+        let r = cos(tp * n) + 0.5
+        let g = cos(tp * n - tp) + 0.5
+        let b = cos(tp * n + tp) + 0.5
+        return `rgb(${r * 255}, ${g * 255},  ${b * 255})`
+    }
+    let rainbowed = rainbow(0)
+    let colorTimer = 0
     const COLORS = {
         BLACK: '#050505',
         WHITE: '#fff',
@@ -64,7 +74,7 @@
         PINK: '#ffb6c1',
         PINK_T: '#ffb6c180',
         PURPLE: '#cc66ff',
-        PURPLE_D: '#552288'
+        PURPLE_D: '#552288',
     }
     const COLORS2 = {
         BLACK_T: 'rgba(0,0,0,0.6)',
@@ -666,7 +676,7 @@
                     ctx.fillStyle = COLORS.PURPLE
                     break
                 default:
-                    ctx.fillStyle = COLORS.GRAY
+                    ctx.fillStyle = rainbowed//COLORS.GRAY
                     break
             }
             ctx.fillRect(this.x, this.y, this.w, this.h)
@@ -1265,6 +1275,9 @@
             projectile.vy = PROJECTILE_SPEED * Math.sin(angle)
             balls.push(projectile)
         }
+        //rainbow color
+        colorTimer+=dt
+        rainbowed = rainbow(colorTimer/3000)
 
         // Paddle movement
         paddle.dy = 0
