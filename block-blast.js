@@ -702,7 +702,7 @@
                     const vy = speed * Math.sin(angle)
                     const vr = (Math.random() - 0.5) * 10
                     const size = Math.min(this.w, this.h) / particleCount
-                    let color = '#777'
+                    let color = rainbowed//COLORS.GRAY
 
                     switch (this.type) {
                         case 'projectile':
