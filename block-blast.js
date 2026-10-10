@@ -50,9 +50,9 @@
     function rainbow(n){
         //cycle is completed every 3n
         let tp = 2 * Math.PI / 3
-        let r = cos(tp * n) + 0.5
-        let g = cos(tp * n - tp) + 0.5
-        let b = cos(tp * n + tp) + 0.5
+        let r = Math.cos(tp * n) + 0.5
+        let g = Math.cos(tp * n - tp) + 0.5
+        let b = Math.cos(tp * n + tp) + 0.5
         return `rgb(${r * 255}, ${g * 255},  ${b * 255})`
     }
     let rainbowed = rainbow(0)
