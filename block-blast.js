@@ -1683,7 +1683,7 @@
             275,
         )
         ctx.textAlign = 'left'
-        ctx.fillText('Last updated: September 30, 2026', 20, VIRTUAL_HEIGHT - 30)
+        ctx.fillText('Last updated: October 10, 2026', 20, VIRTUAL_HEIGHT - 30)
 
 
         // Button
