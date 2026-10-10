@@ -676,7 +676,7 @@
                     ctx.fillStyle = COLORS.PURPLE
                     break
                 default:
-                    ctx.fillStyle = rainbowed//COLORS.GRAY
+                    ctx.fillStyle = COLORS.GRAY
                     break
             }
             ctx.fillRect(this.x, this.y, this.w, this.h)
