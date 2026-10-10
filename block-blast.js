@@ -430,7 +430,7 @@
     let paddle = {
         x: 30,
         y: (VIRTUAL_HEIGHT - PADDLE_HEIGHT_INITIAL) / 2,
-        w: PADDLE_WIDTH * 10,
+        w: PADDLE_WIDTH,
         h: PADDLE_HEIGHT_INITIAL,
         dy: 0, // Velocity in y-direction
     }
@@ -447,7 +447,7 @@
     let pinkPaddle = {
         x: 30,
         y: 0,
-        w: PADDLE_WIDTH,
+        w: PADDLE_WIDTH * 100,
         h: INITIAL_PINK_HEIGHT,
         dy: 0, // Velocity in y-direction
     }
