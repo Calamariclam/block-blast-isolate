@@ -1225,7 +1225,7 @@
     /* --- GAME LOOP & UPDATES --- */
     function gameLoop(now) {
         // If paused, freeze dt so physics doesn’t jump on resume
-        const dt = isPaused ? 0 : Math.min((now - lastTime) / 1000, 0.033)
+        const dt = isPaused ? 0 : Math.min((now - lastTime) / 1000, 0.033) //dt is in seconds I think???
         lastTime = now
 
         switch (currentScene) {
