@@ -264,8 +264,8 @@
     const ctx = canvas.getContext('2d')
     const VIRTUAL_WIDTH = 1200
     const VIRTUAL_HEIGHT = 600
-    const MAX_WIDTH = 1000
-    const MAX_HEIGHT = 1000
+    const MAX_WIDTH = 2000
+    const MAX_HEIGHT = 2000
 
     let lastTime = performance.now() // Time since last frame for delta time calculation
 
