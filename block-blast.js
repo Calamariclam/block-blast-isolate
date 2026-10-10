@@ -430,7 +430,7 @@
     let paddle = {
         x: 30,
         y: (VIRTUAL_HEIGHT - PADDLE_HEIGHT_INITIAL) / 2,
-        w: PADDLE_WIDTH,
+        w: PADDLE_WIDTH * 10,
         h: PADDLE_HEIGHT_INITIAL,
         dy: 0, // Velocity in y-direction
     }
@@ -702,7 +702,7 @@
                     const vy = speed * Math.sin(angle)
                     const vr = (Math.random() - 0.5) * 10
                     const size = Math.min(this.w, this.h) / particleCount
-                    let color = rainbowed//COLORS.GRAY
+                    let color = COLORS.GRAY
 
                     switch (this.type) {
                         case 'projectile':
