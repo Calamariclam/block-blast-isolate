@@ -40,7 +40,7 @@
     const SUPER_MODE = false
     const SUPER_BONUS = 20 //Extra paddle height when collecting rainbow ball
     const SUPER_HEIGHT_FLUCTUATION = 0.1
-    
+    const SUPER_EXPLOSION_EXEMPT = ['normal', 'blocking', 'rainbow']
 
     /* --- BALL/PROJECTILE PROPERTIES --- */
     const BALL_RADIUS = 10
@@ -429,7 +429,7 @@
         let textWidth = ctx.measureText(`Score: ${currentScore}`).width
 
         //So if the previous score is the same source, make my number bigger and remove the previous one
-        if(floatyTexts.length && floatyTexts[floatyTexts.length - 1].type === 'score' && floatyTexts[floatyTexts.length - 1].color === color){
+        if(floatyTexts.length && floatyTexts[floatyTexts.length - 1].type === 'score' && (floatyTexts[floatyTexts.length - 1].color === color || SUPER_MODE)){
             let x = Number(floatyTexts[floatyTexts.length - 1].text)
             amount += x
             floatyTexts.pop()
@@ -763,6 +763,9 @@
                                     case 'piercing':
                                         color = COLORS.GREEN
                                         break
+                                    case 'rainbow':
+                                        color = rainbowed
+                                        break
                                     default:
                                         color = COLORS.WHITE
                                         break
@@ -1071,13 +1074,15 @@
                     this.activateEffect(ball)
                     // add flavor text for score increase
                     let color = COLORS.GRAY
-                    
                     switch (ball.type) {
                         case 'bomb':
                             color = COLORS.BLUE_L
                             break
                         case 'piercing':
                             color = COLORS.GREEN
+                            break
+                        case 'rainbow':
+                            color = rainbowed
                             break
                         default:
                             color = COLORS.WHITE
@@ -1303,7 +1308,43 @@
         this.x = x
         this.y = y
         this.r = 0
-        this.speed = SUPER_EXPLOSION_SPEED
+        
+        this.display = function() {
+            //Inner outline that's white-ish and transparent
+            ctx.save()
+            ctx.beginPath()
+            ctx.globalAlpha = 0.4
+            ctx.strokeStyle = lerpHexColor(rainbowed, COLORS.WHITE, 0.5)
+            ctx.lineWidth = this.r * 0.1
+            ctx.arc(this.x, this.y, this.r * 0.95, 2 * Math.PI)
+            ctx.stroke()
+            ctx.restore()
+            //Outer outline that's a sort of shockwave front
+            ctx.beginPath()
+            ctx.strokeStyle = rainbowed
+            ctx.lineWidth = 10
+            ctx.arc(this.x, this.y, this.r, 2 * Math.PI)
+            ctx.stroke()
+        }
+
+        this.update = function(dt) {
+            this.r += dt * SUEPR_EXPLOSION_SPEED
+        }
+
+        this.checkForCollisions = function(ball) {
+            if(!circleCircleColliding(this, ball) && !SUPER_EXPLOSION_EXEMPT.includes(ball.type)){
+                return false
+            }
+
+            if(ball.type === 'projectile'){
+                score(1, rainbowed)
+            }else{
+                score(5, rainbowed)
+            }
+            ball.isDestroyed = true
+
+            return true
+        }
     }
 
     /* --- GAME LOOP & UPDATES --- */
@@ -1399,6 +1440,16 @@
             }
         }
 
+        //update super explosions
+        for (let i = 0; i < superExplosions.length; i++) {
+            const explosion = superExplosions[i]
+            explosion.update(dt)
+            if (explosion.r >= SUPER_EXPLOSION_RADIUS) {
+                superExplosions.splice(i, 1)
+                i--
+            }
+        }
+
         // Ball movement and collisions
         for (let i = balls.length - 1; i >= 0; i--) {
             // Iterate backward for safe removal
@@ -1450,8 +1501,16 @@
                         pinkPaddle.h = (pinkPaddle.h <= diamondPaddle.h) ? diamondPaddle.h + pinkPaddle.h / 2 : pinkPaddle.h + diamondPaddle.h/2
                         // pinkPaddle.h += diamondPaddle.h
                         balls.splice(i, 1)
+                        
                         score(5, COLORS.PINK)
-                        continue // Skip block collision check for this destroyed diamond
+                        continue // Skip block collision check for this destroyed pink
+                    }
+                    if (ball.type === 'rainbow') {
+                        //Temporary
+                        superExplosions.push(new superExplosion(diamondPaddle.x + diamondPaddle.w, diamondPaddle.y + diamondPaddle.h / 2))
+                        //delete the ball
+                        balls.splice(i, 1)
+                        continue
                     }
                 }
             }
@@ -1493,7 +1552,14 @@
                     // pinkPaddle.h += paddle.h
                     balls.splice(i, 1)
                     score(5, COLORS.PINK)
-                    continue // Skip block collision check for this destroyed diamond
+                    continue // Skip block collision check for this destroyed pink
+                }
+                if (ball.type === 'rainbow') {
+                    //Temporary
+                    superExplosions.push(new superExplosion(paddle.x + paddle.w, paddle.y + paddle.h / 2))
+                    //delete the ball
+                    balls.splice(i, 1)
+                    continue
                 }
             }
             if(pinkPaddle.h > 0) {
@@ -1532,6 +1598,12 @@
                     continue
                 }
                 if (balls[j].checkForCollisions(ball)) {
+                    break // Only check one collision per ball per frame for simplicity
+                }
+            }
+            // Explosion-ball collision
+            for (let j = 0; j < superExplosions.length; j++) {
+                if (superExplosions[j].checkForCollisions(ball)) {
                     break // Only check one collision per ball per frame for simplicity
                 }
             }
@@ -1689,6 +1761,10 @@
         }
         for (const particle of explosionParticles) {
             particle.display()
+        }
+        // Super explosions
+        for (const explosion of superExplosions){
+            explosion.display()
         }
         // Draw flavor text
         for (const text of floatyTexts) {
