@@ -31,6 +31,17 @@
     const INITIAL_PINK_HEIGHT = 0
     const PINK_DEPLETION_RATE = 8 //The rate at which the pink paddle shrinks
 
+    /* --- SUPER PADDLE AND STUFF --- */
+    const SUPER_WIDTH = 500
+    const SUPER_DURATIONS = [3, 15, 5] //Charge time, fire time, shrink time
+    const SUPER_TIMER = 0
+    const SUPER_EXPLOSION_RADIUS = 1200
+    const SUPER_EXPLOSION_SPEED = 100;
+    const SUPER_MODE = false
+    const SUPER_BONUS = 20 //Extra paddle height when collecting rainbow ball
+    const SUPER_HEIGHT_FLUCTUATION = 0.1
+    
+
     /* --- BALL/PROJECTILE PROPERTIES --- */
     const BALL_RADIUS = 10
     const BOMB_RADIUS = 12
@@ -45,6 +56,8 @@
     const BLOCKING_RADIUS_MAX = 40
     const BLOCKING_RADIUS_MIN = 8
     const BLOCKING_SPEED = 190
+    const RAINBOW_RADIUS = 10
+    const RAINBOW_SPEED = 200
 
     /* --- COLORS --- */
     function rainbow(n){
@@ -53,7 +66,7 @@
         let r = Math.cos(tp * n) + 0.5
         let g = Math.cos(tp * n - tp) + 0.5
         let b = Math.cos(tp * n + tp) + 0.5
-        return `rgb(${r * 255}, ${g * 255},  ${b * 255})`
+        return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`
     }
     let rainbowed = rainbow(0)
     let colorTimer = 0
@@ -97,6 +110,7 @@
     const DIAMOND_BLOCK_WEIGHT = 0.5 //the light blue blocks
     const PINK_BLOCK_WEIGHT = 0.08
     const BLOCKING_BLOCK_WEIGHT = 0.05 //0.04
+    const RAINBOW_BLOCK_WEIGHT = 0.4
     const TOTAL_SPECIAL_WEIGHT =
         PROJECTILE_BLOCK_WEIGHT +
         BOMB_BLOCK_WEIGHT +
@@ -105,7 +119,8 @@
         EXPLODE_BLOCK_WEIGHT + 
         DIAMOND_BLOCK_WEIGHT + 
         PINK_BLOCK_WEIGHT + 
-        BLOCKING_BLOCK_WEIGHT
+        BLOCKING_BLOCK_WEIGHT + 
+        RAINBOW_BLOCK_WEIGHT
 
     /* --- BUTTON --- */
     function hotkey(key, effect){
@@ -183,6 +198,7 @@
     let brokenBlockParticles = []
     let explosionParticles = []
     let floatyTexts = [] //aka flavor text
+    let superExplosions = []
 
     /* --- GAME MANAGEMENT FUNCTIONS --- */
     function startGame() {
@@ -447,8 +463,16 @@
     let pinkPaddle = {
         x: 30,
         y: 0,
-        w: PADDLE_WIDTH * 100,
+        w: PADDLE_WIDTH,
         h: INITIAL_PINK_HEIGHT,
+        dy: 0, // Velocity in y-direction
+    }
+    // super paddle AKA super paddle
+    let superPaddle = {
+        x: 30,
+        y: 0, 
+        w: SUPER_WIDTH,
+        h: 0,
         dy: 0, // Velocity in y-direction
     }
 
@@ -644,6 +668,18 @@
                 BLOCKING_BLOCK_WEIGHT
             ){
                 this.type = 'blocking'
+            } else if (
+                rand <
+                PROJECTILE_BLOCK_WEIGHT +
+                BOMB_BLOCK_WEIGHT +
+                PIERCING_BLOCK_WEIGHT +
+                MITOSIS_BLOCK_WEIGHT + 
+                DIAMOND_BLOCK_WEIGHT + 
+                PINK_BLOCK_WEIGHT + 
+                BLOCKING_BLOCK_WEIGHT +
+                RAINBOW_BLOCK_WEIGHT
+            ){
+                this.type = 'rainbow'
             }else {
                 this.type = 'explode'
             }
@@ -674,6 +710,9 @@
                     break
                 case 'blocking':
                     ctx.fillStyle = COLORS.PURPLE
+                    break
+                case 'rainbow':
+                    ctx.fillStyle = rainbowed
                     break
                 default:
                     ctx.fillStyle = COLORS.GRAY
@@ -743,6 +782,9 @@
                             break
                         case 'blocking':
                             color = COLORS.PURPLE
+                            break
+                        case 'rainbow':
+                            color = rainbowed
                             break
                     }
                     const particle = new BlockBreakParticle(
@@ -922,6 +964,20 @@
                     blockingBall.vy = BLOCKING_SPEED * Math.sin(blockingAngle)
                     balls.push(blockingBall)
                     break
+                case 'rainbow':
+                    // Spawn a bomb ball that explodes on collision
+                    const raingle = generateAngle((5 * Math.PI) / 8, -1)
+                    const rainBall = new Ball(
+                        this.x + this.w / 2,
+                        this.y + this.h / 2,
+                        RAINBOW_RADIUS,
+                        'rainbow',
+                        RAINBOW_SPEED,
+                    )
+                    rainBall.vx = RAINBOW_SPEED * Math.cos(raingle)
+                    rainBall.vy = RAINBOW_SPEED * Math.sin(raingle)
+                    balls.push(rainBall)
+                    break
             }
             // currentScore++
         }
@@ -1027,6 +1083,9 @@
                             color = COLORS.WHITE
                             break
                     }// projectiles, diamonds, and pinks shouldn't be breaking blocks anyways
+                    if(SUPER_MODE){
+                        color = rainbowed
+                    }
                     score(1, color)
                 }
             }
@@ -1178,6 +1237,24 @@
                     }
                     
                     break
+                case 'rainbow':
+                    // Pulsing effect for an active bomb ball
+                    let pulse = Math.pow(
+                        Math.sin((performance.now() - this.spawnTime) / 200),
+                        2,
+                    )
+                    if (pulse > 0.8) {
+                        pulse = 1
+                    } else {
+                        pulse = 0.8 + pulse * 0.2
+                    }
+                    ctx.fillStyle = lerpHexColor(rainbowed, COLORS.WHITE, 0.5)
+                    ctx.arc(this.x, this.y, this.r * pulse * 1.5, 0, Math.PI * 2)
+                    ctx.fill()
+                    ctx.fillStyle = rainbowed
+                    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
+                    ctx.fill()
+                    break
                 default: // 'normal' ball
                     ctx.fillStyle = COLORS.WHITE
                     ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
@@ -1220,6 +1297,13 @@
             servedBall.vx = BALL_SPEED * Math.cos(angle)
             servedBall.vy = BALL_SPEED * Math.sin(angle)
         }, 500)
+    }
+
+    function superExplosion(x, y){
+        this.x = x
+        this.y = y
+        this.r = 0
+        this.speed = SUPER_EXPLOSION_SPEED
     }
 
     /* --- GAME LOOP & UPDATES --- */
