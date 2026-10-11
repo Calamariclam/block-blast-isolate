@@ -1,3 +1,8 @@
 10/10/2026
 - changed max canvas width/height from 1000 to 2000
 - added 'rainbowed' color
+
+10/11/2026
+- added several parameters for super/rainbow features
+- added rainbow blocks and balls
+- added super explosions
