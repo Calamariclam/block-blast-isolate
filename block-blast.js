@@ -34,6 +34,7 @@
     /* --- SUPER PADDLE AND STUFF --- */
     const SUPER_WIDTH = 500
     const SUPER_DURATIONS = [3, 15, 5] //Charge time, fire time, shrink time
+    const SUPER_TIMER_MAX = 23
     const SUPER_TIMER = 0
     const SUPER_EXPLOSION_RADIUS = 1800
     const SUPER_EXPLOSION_SPEED = 400;
@@ -477,7 +478,9 @@
         y: 0, 
         w: SUPER_WIDTH,
         h: 0,
+        dh: 0, //display height
         dy: 0, // Velocity in y-direction
+        timer: SUPER_TIMER
     }
 
     // Helper for Rect-Circle Collision Detection
@@ -1258,6 +1261,8 @@
                         pulse = 0.8 + pulse * 0.2
                     }
                     ctx.fillStyle = lerpHexColor(rainbowed, COLORS.WHITE, 0.5)
+                    console.log({ rainbowed, white: COLORS.WHITE, t: 0.5 })
+                    console.log(lerpHexColor(rainbowed, COLORS.WHITE, 0.5))
                     ctx.arc(this.x, this.y, this.r * pulse * 1.5, 0, Math.PI * 2)
                     ctx.fill()
                     ctx.fillStyle = rainbowed
@@ -1408,7 +1413,7 @@
         colorTimer+=dt
         rainbowed = rainbow(colorTimer)
 
-        // Paddle movement
+        // Paddle movement (update paddle)
         paddle.dy = 0
         if (keys['w'] || keys['arrowup']) paddle.dy = -PADDLE_SPEED 
         if (keys['s'] || keys['arrowdown']) paddle.dy = PADDLE_SPEED
@@ -1424,7 +1429,24 @@
             let paul = VIRTUAL_HEIGHT - pinkPaddle.h
             pinkPaddle.y = paul - paddle.y * ((paul) / (VIRTUAL_HEIGHT - paddle.h))
         }
-        
+        // Update super paddle
+        if(superPaddle.timer){
+            SUPER_MODE = true
+            superPaddle.timer -= dt
+            if(SUPER_TIMER_MAX - superPaddle.timer < SUPER_DURATIONS[0]){
+                superPaddle.h = 0
+            }else if(SUPER_TIMER_MAX - superPaddle.timer < SUPER_DURATIONS[0] + SUPER_DURATIONS[1]){
+                superPaddle.h = paddle.h
+            }else if(SUPER_TIMER_MAX - superPaddle.timer < SUPER_DURATIONS[0] + SUPER_DURATIONS[1] + SUPER_DURATIONS[2]){
+                superPaddle.h = paddle.h * (superPaddle.timer / SUPER_TIMER_MAX)
+            }
+            superPaddle.y = paddle.y + (paddle.h - superPaddle.h) / 2.0
+
+            if(superPaddle.timer <= 0){
+                superExplosions.push(new superExplosion(diamondPaddle.x + diamondPaddle.w, diamondPaddle.y + diamondPaddle.h / 2))
+                SUPER_MODE = false
+            }
+        }
 
         // Update particles and remove expired ones
         for (let i = 0; i < brokenBlockParticles.length; i++) {
