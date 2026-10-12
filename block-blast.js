@@ -41,8 +41,8 @@
     // const SUPER_MODE = false
     const SUPER_BONUS = 20 //Extra paddle height when collecting rainbow ball
     const SUPER_HEIGHT_FLUCTUATION = 0.1
-    const SUPER_EXPLOSION_EXEMPT = ['normal', 'blocking', 'rainbow']
-    const SUPER_LASER_IGNORE = ['diamond', 'pink', 'rainbow']
+    const SUPER_EXPLOSION_EXEMPT = ['blocking', 'rainbow']
+    const SUPER_LASER_IGNORE = ['pink', 'rainbow']
 
     /* --- BALL/PROJECTILE PROPERTIES --- */
     const BALL_RADIUS = 10
@@ -877,7 +877,7 @@
                             this.x + this.w / 2,
                             this.y + this.h / 2,
                             hittingBall.r,
-                            hittingBall.type,
+                            ((superMode && hittingBall.type === 'normal') ? 'pseudoNormal' : hittingBall.type),
                             hittingBall.speed,
                             true,
                         )
@@ -1354,6 +1354,8 @@
 
             if(ball.type === 'projectile'){
                 score(1, 'rainbow')
+            }if(ball.type === 'diamond'){
+                score(2, 'rainbow')
             }else{
                 score(5, 'rainbow')
             }
