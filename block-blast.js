@@ -62,10 +62,10 @@
     /* --- COLORS --- */
     function rainbow(n){
         //cycle is completed every 3n
-        let tp = 2 * Math.PI / 3
-        let r = (Math.cos(tp * n) + 0.5) * 255
-        let g = (Math.cos(tp * n - tp) + 0.5) * 255
-        let b = (Math.cos(tp * n + tp) + 0.5) * 255
+        const tp = 2 * Math.PI / 3
+        const r = Math.round(Math.min(Math.max((Math.cos(tp * n) + 0.5) * 255, 0), 255))
+        const g = Math.round(Math.min(Math.max((Math.cos(tp * n - tp) + 0.5) * 255, 0), 255))
+        const b = Math.round(Math.min(Math.max((Math.cos(tp * n + tp) + 0.5) * 255, 0), 255))
         return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`
     }
     let rainbowed = rainbow(0)
