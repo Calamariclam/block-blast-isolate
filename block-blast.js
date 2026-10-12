@@ -1160,16 +1160,20 @@
             // Wall collisions (top and bottom)
             if (this.y - this.r <= 0) {
                 this.y = this.r
-                this.vy *= -1
+                this.vy = Math.abs(this.vy)
             } else if (this.y + this.r >= VIRTUAL_HEIGHT) {
                 this.y = VIRTUAL_HEIGHT - this.r
-                this.vy *= -1
+                this.vy = -Math.abs(this.vy)
             }
 
             // Right wall collision (for standard bounce)
             if (this.x + this.r >= VIRTUAL_WIDTH) {
                 this.x = VIRTUAL_WIDTH - this.r
-                this.vx *= -1
+                this.vx = -Math.abs(this.vx)
+            } else 
+            if(superMode && this.type === 'normal' && this.x - this.r <= 0){
+                this.x = this.r
+                this.vx = Math.abs(this.vx)
             }
 
             // Prevent horizontal bounce stall
@@ -1520,7 +1524,7 @@
             // Iterate backward for safe removal
             const ball = balls[i]
             if (ball.isDestroyed || ball.x + ball.r < 0) {
-                // Check for destruction or off-screen
+                // Check for destruction or off-screen (remove balls that are too far left)
                 balls.splice(i, 1)
                 continue
             }
