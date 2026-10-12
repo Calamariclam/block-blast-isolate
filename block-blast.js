@@ -1795,10 +1795,10 @@
                 ctx.beginPath()
                 ctx.strokeStyle = rainbowed
                 ctx.lineWidth = 3
-                ctx.arc(pxw, pyh, 60 * (superPaddle.timer % 0.5), 0, 2 * Math.PI)
+                ctx.arc(pxw, pyh, 100 * (superPaddle.timer % 0.5), 0, 2 * Math.PI)
                 ctx.stroke()
                 let pr = 50 * (SUPER_DURATIONS[0] - tt)
-                let pa = pyh / (Math.PI * 100)
+                let pa = pyh / (Math.PI * 100) + tt * 2
                 for(let ppi = 0; ppi < 6; ppi++){
                     ctx.beginPath()
                     ctx.strokeStyle = rainbowed
@@ -1807,7 +1807,7 @@
                     ctx.stroke()
                 }
             }else{
-                drawRoundRect(superPaddle.x, superPaddle.y + superPaddle.h - superPaddle.dih, superPaddle.w, superPaddle.dih, (superPaddle.h/4), rainbowed)
+                drawRoundRect(superPaddle.x, superPaddle.y + (superPaddle.h - superPaddle.dih) / 2, superPaddle.w, superPaddle.dih, (superPaddle.h/4), rainbowed)
                 ctx.save()
                 ctx.globalAlpha = 0.3
                 drawRoundRect(superPaddle.x, superPaddle.y + (superPaddle.h - 0.75 * superPaddle.dih) / 2, superPaddle.w, (superPaddle.dih) * 0.75, (superPaddle.h/4), COLORS.WHITE)
