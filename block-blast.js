@@ -412,7 +412,11 @@
         this.display = function(){
             ctx.globalAlpha = Math.max(0, (this.lifetime/this.LIFETIME)) //Text fades out
             ctx.font = `${this.size}px system-ui, sans-serif`
-            ctx.fillStyle = this.color
+            if(this.color === 'rainbow'){
+                ctx.fillStyle = rainbowed
+            }else{
+                ctx.fillStyle = this.color
+            }
             ctx.textAlign = this.textAlign
             ctx.fillText(this.text, this.x, this.y)
             ctx.globalAlpha = 1//don't wanna make everything else transparent
@@ -429,7 +433,7 @@
         let textWidth = ctx.measureText(`Score: ${currentScore}`).width
 
         //So if the previous score is the same source, make my number bigger and remove the previous one
-        if(floatyTexts.length && floatyTexts[floatyTexts.length - 1].type === 'score' && (floatyTexts[floatyTexts.length - 1].color === color || SUPER_MODE)){
+        if(floatyTexts.length && floatyTexts[floatyTexts.length - 1].type === 'score' && (floatyTexts[floatyTexts.length - 1].color === color)){
             let x = Number(floatyTexts[floatyTexts.length - 1].text)
             amount += x
             floatyTexts.pop()
@@ -1089,7 +1093,7 @@
                             break
                     }// projectiles, diamonds, and pinks shouldn't be breaking blocks anyways
                     if(SUPER_MODE){
-                        color = rainbowed
+                        color = 'rainbow'
                     }
                     score(1, color)
                 }
@@ -1337,9 +1341,9 @@
             }
 
             if(ball.type === 'projectile'){
-                score(1, rainbowed)
+                score(1, 'rainbow')
             }else{
-                score(5, rainbowed)
+                score(5, 'rainbow')
             }
             ball.isDestroyed = true
 
