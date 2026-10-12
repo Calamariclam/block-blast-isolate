@@ -1328,7 +1328,7 @@
         }
 
         this.update = function(dt) {
-            this.r += dt * SUEPR_EXPLOSION_SPEED
+            this.r += dt * SUPER_EXPLOSION_SPEED
         }
 
         this.checkForCollisions = function(ball) {
