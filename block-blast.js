@@ -1441,7 +1441,7 @@
             }else if(SUPER_TIMER_MAX - superPaddle.timer < SUPER_DURATIONS[0] + SUPER_DURATIONS[1]){
                 superPaddle.h = paddle.h
             }else if(SUPER_TIMER_MAX - superPaddle.timer < SUPER_DURATIONS[0] + SUPER_DURATIONS[1] + SUPER_DURATIONS[2]){
-                superPaddle.h = paddle.h * (superPaddle.timer / SUPER_TIMER_MAX)
+                superPaddle.h = paddle.h * (superPaddle.timer / SUPER_DURATIONS[2])
             }
             superPaddle.dih = superPaddle.h * (1 + SUPER_HEIGHT_FLUCTUATION * Math.sin(superPaddle.timer * Math.PI))
             superPaddle.y = paddle.y + (paddle.h - superPaddle.h) / 2.0
@@ -1803,7 +1803,7 @@
                     ctx.beginPath()
                     ctx.strokeStyle = rainbowed
                     ctx.lineWidth = 2
-                    ctx.arc(pxw + pr * Math.cos(pa + ppi * Math.PI/6), pyh + pr * Math.sin(pa + ppi * Math.PI/6), 5, 0, 2 * Math.PI)
+                    ctx.arc(pxw + pr * Math.cos(pa + ppi * Math.PI/3), pyh + pr * Math.sin(pa + ppi * Math.PI/3), 5, 0, 2 * Math.PI)
                     ctx.stroke()
                 }
             }else{
