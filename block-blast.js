@@ -42,6 +42,7 @@
     const SUPER_BONUS = 20 //Extra paddle height when collecting rainbow ball
     const SUPER_HEIGHT_FLUCTUATION = 0.1
     const SUPER_EXPLOSION_EXEMPT = ['normal', 'blocking', 'rainbow']
+    const SUPER_LASER_IGNORE = ['diamond', 'pink', 'rainbow']
 
     /* --- BALL/PROJECTILE PROPERTIES --- */
     const BALL_RADIUS = 10
@@ -505,7 +506,7 @@
         return dist <= colDist
     }
 
-    function hitBall(thePaddle, ball){
+    function hitBall(thePaddle, ball, snap = true){
         // Calculate bounce angle based on relative hit position on the paddle
         const relativeY = (ball.y - (thePaddle.y + thePaddle.h / 2)) / (thePaddle.h / 2)
         const bounceAngle = relativeY * (Math.PI / 3) // Max angle of +/- 60 degrees
@@ -518,7 +519,9 @@
         ball.ballsHitCount = ball.type === 'blocking' ? 0 : Infinity // Reset ball hit count
         if(ball.type === 'blocking')
             ball.r = BLOCKING_RADIUS_MAX
-        ball.x = thePaddle.x + thePaddle.w + ball.r + 0.1 // Reposition ball to prevent sticking
+        if(snap){
+            ball.x = thePaddle.x + thePaddle.w + ball.r + 0.1 // Reposition ball to prevent sticking
+        }
     }
 
     // Helper to draw a rounded rectangle
@@ -1325,7 +1328,7 @@
             ctx.save()
             ctx.beginPath()
             ctx.globalAlpha = 0.4
-            ctx.strokeStyle = lerpHexColor(rainbowed, COLORS.WHITE, 0.8)
+            ctx.strokeStyle = lerpHexColor(rainbowed, COLORS.WHITE, 0.5)
             ctx.lineWidth = this.r * 0.1
             ctx.arc(this.x, this.y, this.r * 0.95, 0, 2 * Math.PI)
             ctx.stroke()
@@ -1618,6 +1621,18 @@
                             score(5, COLORS.PINK)
                             continue // Skip block collision check for this destroyed diamond
                         }
+                    }
+                }
+            }
+            if(superPaddle.h > 0) {
+                // Super Paddle collision
+                if (ball.vx < 0 && rectCircleColliding(superPaddle, ball) && !SUPER_LASER_IGNORE.includes(ball.type)) {
+                    hitBall(superPaddle, ball, false)
+                    if (ball.type === 'projectile') {
+                        //kill projectiles
+                        balls.splice(i, 1)
+                        score(1, 'rainbow')
+                        continue // Skip block collision check for this destroyed projectile
                     }
                 }
             }
