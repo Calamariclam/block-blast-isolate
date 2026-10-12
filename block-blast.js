@@ -38,7 +38,7 @@
     const SUPER_TIMER = 0
     const SUPER_EXPLOSION_RADIUS = 1800
     const SUPER_EXPLOSION_SPEED = 400;
-    const SUPER_MODE = false
+    // const SUPER_MODE = false
     const SUPER_BONUS = 20 //Extra paddle height when collecting rainbow ball
     const SUPER_HEIGHT_FLUCTUATION = 0.1
     const SUPER_EXPLOSION_EXEMPT = ['normal', 'blocking', 'rainbow']
@@ -200,6 +200,7 @@
     let explosionParticles = []
     let floatyTexts = [] //aka flavor text
     let superExplosions = []
+    let superMode = false
 
     /* --- GAME MANAGEMENT FUNCTIONS --- */
     function startGame() {
@@ -736,7 +737,7 @@
             if (this.isDestroyed) return
             this.isDestroyed = true
 
-          if(!SUPER_MODE){ //Don't make these particles during super mode for lag
+          if(!superMode){ //Don't make these particles during super mode for lag
             // Spawn block break particles
             const particleCount = NUM_BLOCK_BREAK_PARTICLES_PER_AXIS
             for (let x = 0; x < particleCount; x++) {
@@ -1097,7 +1098,7 @@
                             color = COLORS.WHITE
                             break
                     }// projectiles, diamonds, and pinks shouldn't be breaking blocks anyways
-                    if(SUPER_MODE){
+                    if(superMode){
                         color = 'rainbow'
                     }
                     score(1, color)
@@ -1432,9 +1433,10 @@
         }
         // Update super paddle
         if(superPaddle.timer > 0){
-            SUPER_MODE = true
+            superMode = true
             superPaddle.timer -= dt
             if(SUPER_TIMER_MAX - superPaddle.timer < SUPER_DURATIONS[0]){
+                superMode = false
                 superPaddle.h = 0
             }else if(SUPER_TIMER_MAX - superPaddle.timer < SUPER_DURATIONS[0] + SUPER_DURATIONS[1]){
                 superPaddle.h = paddle.h
@@ -1446,7 +1448,7 @@
 
             if(superPaddle.timer <= 0){
                 superExplosions.push(new superExplosion(diamondPaddle.x + diamondPaddle.w, diamondPaddle.y + diamondPaddle.h / 2))
-                SUPER_MODE = false
+                superMode = false
             }
         }
 
