@@ -6,3 +6,6 @@
 - added several parameters for super/rainbow features
 - added rainbow blocks and balls
 - added super explosions
+
+10/12/2026
+- adjustment for better vertical fitting of the canvas
