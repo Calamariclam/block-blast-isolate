@@ -35,8 +35,8 @@
     const SUPER_WIDTH = 500
     const SUPER_DURATIONS = [3, 15, 5] //Charge time, fire time, shrink time
     const SUPER_TIMER = 0
-    const SUPER_EXPLOSION_RADIUS = 1500
-    const SUPER_EXPLOSION_SPEED = 200;
+    const SUPER_EXPLOSION_RADIUS = 1800
+    const SUPER_EXPLOSION_SPEED = 400;
     const SUPER_MODE = false
     const SUPER_BONUS = 20 //Extra paddle height when collecting rainbow ball
     const SUPER_HEIGHT_FLUCTUATION = 0.1
