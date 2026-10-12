@@ -63,9 +63,9 @@
     function rainbow(n){
         //cycle is completed every 3n
         let tp = 2 * Math.PI / 3
-        let r = Math.cos(tp * n) + 0.5
-        let g = Math.cos(tp * n - tp) + 0.5
-        let b = Math.cos(tp * n + tp) + 0.5
+        let r = (Math.cos(tp * n) + 0.5) * 255
+        let g = (Math.cos(tp * n - tp) + 0.5) * 255
+        let b = (Math.cos(tp * n + tp) + 0.5) * 255
         return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`
     }
     let rainbowed = rainbow(0)
@@ -1316,14 +1316,14 @@
             ctx.globalAlpha = 0.4
             ctx.strokeStyle = lerpHexColor(rainbowed, COLORS.WHITE, 0.5)
             ctx.lineWidth = this.r * 0.1
-            ctx.arc(this.x, this.y, this.r * 0.95, 2 * Math.PI)
+            ctx.arc(this.x, this.y, this.r * 0.95, 0, 2 * Math.PI)
             ctx.stroke()
             ctx.restore()
             //Outer outline that's a sort of shockwave front
             ctx.beginPath()
             ctx.strokeStyle = rainbowed
             ctx.lineWidth = 10
-            ctx.arc(this.x, this.y, this.r, 2 * Math.PI)
+            ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI)
             ctx.stroke()
         }
 
