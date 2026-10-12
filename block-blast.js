@@ -1097,7 +1097,7 @@
                             color = COLORS.GREEN
                             break
                         case 'rainbow':
-                            color = rainbowed
+                            color = 'rainbow'
                             break
                         default:
                             color = COLORS.WHITE
