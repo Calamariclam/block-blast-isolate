@@ -72,7 +72,7 @@
     let colorTimer = 0
     const COLORS = {
         BLACK: '#050505',
-        WHITE: '#fff',
+        WHITE: '#ffffff',
         WHITE_D: '#e6e6e6',
         GRAY: '#777',
         GRAY_L: '#ccc',
