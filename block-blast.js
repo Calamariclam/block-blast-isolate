@@ -112,7 +112,7 @@
     const DIAMOND_BLOCK_WEIGHT = 0.5 //the light blue blocks
     const PINK_BLOCK_WEIGHT = 0.08
     const BLOCKING_BLOCK_WEIGHT = 0.05 //0.04
-    const RAINBOW_BLOCK_WEIGHT = 0.4
+    const RAINBOW_BLOCK_WEIGHT = 0.01
     const TOTAL_SPECIAL_WEIGHT =
         PROJECTILE_BLOCK_WEIGHT +
         BOMB_BLOCK_WEIGHT +
@@ -428,6 +428,8 @@
     function score(amount, color = COLORS.GRAY){
         if(amount === 0)
             return
+        if(superMode && amount > 0)
+            color = 'rainbow'
         
         currentScore += amount
         
@@ -1436,14 +1438,42 @@
         }
         // Update super paddle
         if(superPaddle.timer > 0){
-            superMode = true
             superPaddle.timer -= dt
             if(SUPER_TIMER_MAX - superPaddle.timer < SUPER_DURATIONS[0]){
                 superMode = false
                 superPaddle.h = 0
             }else if(SUPER_TIMER_MAX - superPaddle.timer < SUPER_DURATIONS[0] + SUPER_DURATIONS[1]){
+                if(!superMode){
+                    //when first switching modes, shoot out some particles
+                    // too lazy to make new particles so I'm just reusing block break particles
+                    const particleCount = 18
+                    const px = paddle.x + paddle.w
+                    for (let si = 0; si < particleCount; si++) {
+                        const py = paddle.y + paddle.h / 2 + paddle.h/4 * Math.random()
+                        const speed = 150 + Math.random() * 150
+                        const angle = Math.random() * Math.PI - Math.PI / 2
+                        const vx = speed * Math.cos(angle)
+                        const vy = speed * Math.sin(angle)
+                        const vr = (Math.random() - 0.5) * 10
+                        const size = 10
+                        const color = rainbow(3 * Math.random())
+                        const particle = new BlockBreakParticle(
+                            px,
+                            py,
+                            size,
+                            vx,
+                            vy,
+                            vr,
+                            color,
+                            1,
+                        )
+                        brokenBlockParticles.push(particle)
+                    }
+                }
+                superMode = true
                 superPaddle.h = paddle.h
             }else if(SUPER_TIMER_MAX - superPaddle.timer < SUPER_DURATIONS[0] + SUPER_DURATIONS[1] + SUPER_DURATIONS[2]){
+                superMode = true
                 superPaddle.h = paddle.h * (superPaddle.timer / SUPER_DURATIONS[2])
             }
             superPaddle.dih = superPaddle.h * (1 + SUPER_HEIGHT_FLUCTUATION * Math.sin(superPaddle.timer * Math.PI))
@@ -1522,7 +1552,7 @@
                     }
                     if (ball.type === 'rainbow') {
                         paddle.h += SUPER_BONUS
-                        if(superPaddle.timer >= 0){ //If it's already on, skip the charging phase
+                        if(superPaddle.timer > 0){ //If it's already on, skip the charging phase
                             superPaddle.timer = SUPER_TIMER_MAX - SUPER_DURATIONS[0]
                         }else{
                             superPaddle.timer = SUPER_TIMER_MAX
@@ -1577,7 +1607,7 @@
                 }
                 if (ball.type === 'rainbow') {
                     paddle.h += SUPER_BONUS
-                    if(superPaddle.timer >= 0){ //If it's already on, skip the charging phase
+                    if(superPaddle.timer > 0){ //If it's already on, skip the charging phase
                         superPaddle.timer = SUPER_TIMER_MAX - SUPER_DURATIONS[0]
                     }else{
                         superPaddle.timer = SUPER_TIMER_MAX
@@ -1624,7 +1654,7 @@
                     }
                 }
             }
-            if(superPaddle.h > 0) {
+            if(superMode) {
                 // Super Paddle collision
                 if (ball.vx < 0 && rectCircleColliding(superPaddle, ball) && !SUPER_LASER_IGNORE.includes(ball.type)) {
                     hitBall(superPaddle, ball, false)
