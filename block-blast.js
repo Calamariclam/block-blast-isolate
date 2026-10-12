@@ -478,7 +478,7 @@
         y: 0, 
         w: SUPER_WIDTH,
         h: 0,
-        dh: 0, //display height
+        dih: 0, //display height
         dy: 0, // Velocity in y-direction
         timer: SUPER_TIMER
     }
@@ -736,6 +736,7 @@
             if (this.isDestroyed) return
             this.isDestroyed = true
 
+          if(!SUPER_MODE){ //Don't make these particles during super mode for lag
             // Spawn block break particles
             const particleCount = NUM_BLOCK_BREAK_PARTICLES_PER_AXIS
             for (let x = 0; x < particleCount; x++) {
@@ -810,6 +811,7 @@
                     brokenBlockParticles.push(particle)
                 }
             }
+          }
 
             // Handle special block type activation
             switch (this.type) {
@@ -975,7 +977,7 @@
                     balls.push(blockingBall)
                     break
                 case 'rainbow':
-                    // Spawn a bomb ball that explodes on collision
+                    // Spawn rainbow ball
                     const raingle = generateAngle((5 * Math.PI) / 8, -1)
                     const rainBall = new Ball(
                         this.x + this.w / 2,
@@ -1439,6 +1441,7 @@
             }else if(SUPER_TIMER_MAX - superPaddle.timer < SUPER_DURATIONS[0] + SUPER_DURATIONS[1] + SUPER_DURATIONS[2]){
                 superPaddle.h = paddle.h * (superPaddle.timer / SUPER_TIMER_MAX)
             }
+            superPaddle.dih = superPaddle.h * (1 + SUPER_HEIGHT_FLUCTUATION * Math.sin(superPaddle.timer * Math.PI))
             superPaddle.y = paddle.y + (paddle.h - superPaddle.h) / 2.0
 
             if(superPaddle.timer <= 0){
@@ -1531,8 +1534,12 @@
                         continue // Skip block collision check for this destroyed pink
                     }
                     if (ball.type === 'rainbow') {
-                        //Temporary
-                        superExplosions.push(new superExplosion(diamondPaddle.x + diamondPaddle.w, diamondPaddle.y + diamondPaddle.h / 2))
+                        if(superPaddle.timer >= 0){ //If it's already on, skip the charging phase
+                            superPaddle.timer = SUPER_TIMER_MAX - SUPER_DURATIONS[0]
+                        }else{
+                            superPaddle.timer = SUPER_TIMER_MAX
+                        }
+                        
                         //delete the ball
                         balls.splice(i, 1)
                         continue
@@ -1580,8 +1587,11 @@
                     continue // Skip block collision check for this destroyed pink
                 }
                 if (ball.type === 'rainbow') {
-                    //Temporary
-                    superExplosions.push(new superExplosion(paddle.x + paddle.w, paddle.y + paddle.h / 2))
+                    if(superPaddle.timer >= 0){ //If it's already on, skip the charging phase
+                        superPaddle.timer = SUPER_TIMER_MAX - SUPER_DURATIONS[0]
+                    }else{
+                        superPaddle.timer = SUPER_TIMER_MAX
+                    }
                     //delete the ball
                     balls.splice(i, 1)
                     continue
@@ -1793,7 +1803,13 @@
                     ctx.stroke()
                 }
             }else{
-                drawRoundRect(superPaddle.x, superPaddle.y, superPaddle.w, superPaddle.h, (superPaddle.h/4), rainbowed)
+                drawRoundRect(superPaddle.x, superPaddle.y + superPaddle.h - superPaddle.dih, superPaddle.w, superPaddle.dih, (superPaddle.h/4), rainbowed)
+                ctx.save()
+                ctx.globalAlpha = 0.3
+                drawRoundRect(superPaddle.x, superPaddle.y + (superPaddle.h - superPaddle.dih) * 0.75, superPaddle.w, (superPaddle.dih) * 0.75, (superPaddle.h/4), COLORS.WHITE)
+                drawRoundRect(superPaddle.x, superPaddle.y + (superPaddle.h - superPaddle.dih) * 0.5, superPaddle.w, (superPaddle.dih) * 0.5, (superPaddle.h/4), COLORS.WHITE)
+                drawRoundRect(superPaddle.x, superPaddle.y + (superPaddle.h - superPaddle.dih) * 0.15, superPaddle.w, (superPaddle.dih) * 0.15, (superPaddle.h/4), COLORS.WHITE)
+                ctx.restore()
             }
         }
         
