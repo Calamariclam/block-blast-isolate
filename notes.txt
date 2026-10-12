@@ -13,3 +13,4 @@
 - added the laser phase of the super paddle
 - adjusted canvas size for main page, while maintaining larger size in subsite
 - normal balls duplicated by mitosis blocks during super mode now create 'pseudoNormal' balls, which are identical to 'normal' balls except they get deleted by the super explosion
+- greatly decreased rainbow block spawn rate, decreased blocking ball spawn rate
