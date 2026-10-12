@@ -1332,7 +1332,7 @@
         }
 
         this.checkForCollisions = function(ball) {
-            if(!circleCircleColliding(this, ball) || !SUPER_EXPLOSION_EXEMPT.includes(ball.type)){
+            if(!circleCircleColliding(this, ball) || SUPER_EXPLOSION_EXEMPT.includes(ball.type)){
                 return false
             }
 
