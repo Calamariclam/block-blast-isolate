@@ -33,8 +33,8 @@
 
     /* --- SUPER PADDLE AND STUFF --- */
     const SUPER_WIDTH = 1200
-    const SUPER_DURATIONS = [3, 15, 5] //Charge time, fire time, shrink time
-    const SUPER_TIMER_MAX = 23
+    const SUPER_DURATIONS = [3, 10, 5] //Charge time, fire time, shrink time
+    const SUPER_TIMER_MAX = 18
     const SUPER_TIMER = 0
     const SUPER_EXPLOSION_RADIUS = 1500
     const SUPER_EXPLOSION_SPEED = 400;
