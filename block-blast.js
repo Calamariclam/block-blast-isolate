@@ -1517,6 +1517,18 @@
                         score(-1, COLORS.RED)
                         continue // Skip block collision check for this destroyed projectile
                     }
+                    if (ball.type === 'rainbow') {
+                        paddle.h += SUPER_BONUS
+                        if(superPaddle.timer >= 0){ //If it's already on, skip the charging phase
+                            superPaddle.timer = SUPER_TIMER_MAX - SUPER_DURATIONS[0]
+                        }else{
+                            superPaddle.timer = SUPER_TIMER_MAX
+                        }
+                        
+                        //delete the ball
+                        balls.splice(i, 1)
+                        continue
+                    }
                     if (ball.type === 'diamond') {
                         // Diamond hits paddle: paddle growth
                         diamondPaddle.bonus += DIAMOND_DAMAGE
@@ -1534,17 +1546,6 @@
                         
                         score(5, COLORS.PINK)
                         continue // Skip block collision check for this destroyed pink
-                    }
-                    if (ball.type === 'rainbow') {
-                        if(superPaddle.timer >= 0){ //If it's already on, skip the charging phase
-                            superPaddle.timer = SUPER_TIMER_MAX - SUPER_DURATIONS[0]
-                        }else{
-                            superPaddle.timer = SUPER_TIMER_MAX
-                        }
-                        
-                        //delete the ball
-                        balls.splice(i, 1)
-                        continue
                     }
                 }
             }
@@ -1571,6 +1572,17 @@
                     score(-1, COLORS.RED)
                     continue // Skip block collision check for this destroyed projectile
                 }
+                if (ball.type === 'rainbow') {
+                    paddle.h += SUPER_BONUS
+                    if(superPaddle.timer >= 0){ //If it's already on, skip the charging phase
+                        superPaddle.timer = SUPER_TIMER_MAX - SUPER_DURATIONS[0]
+                    }else{
+                        superPaddle.timer = SUPER_TIMER_MAX
+                    }
+                    //delete the ball
+                    balls.splice(i, 1)
+                    continue
+                }
                 if (ball.type === 'diamond') {
                     // Diamond hits paddle: paddle growth
                     diamondPaddle.bonus += DIAMOND_DAMAGE
@@ -1587,16 +1599,6 @@
                     balls.splice(i, 1)
                     score(5, COLORS.PINK)
                     continue // Skip block collision check for this destroyed pink
-                }
-                if (ball.type === 'rainbow') {
-                    if(superPaddle.timer >= 0){ //If it's already on, skip the charging phase
-                        superPaddle.timer = SUPER_TIMER_MAX - SUPER_DURATIONS[0]
-                    }else{
-                        superPaddle.timer = SUPER_TIMER_MAX
-                    }
-                    //delete the ball
-                    balls.splice(i, 1)
-                    continue
                 }
             }
             if(pinkPaddle.h > 0) {
