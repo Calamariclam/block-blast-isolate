@@ -10,3 +10,4 @@
 10/12/2026
 - adjustment for better vertical fitting of the canvas
 - changed floaty text function to take in 'rainbow' (string) as a color, and adjusted rainbow scoring to match. 
+- added the laser phase of the super paddle
