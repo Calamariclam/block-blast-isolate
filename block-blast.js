@@ -1656,8 +1656,10 @@
             }
             if(superMode) {
                 // Super Paddle collision
-                if (ball.vx < 0 && rectCircleColliding(superPaddle, ball) && !SUPER_LASER_IGNORE.includes(ball.type)) {
-                    hitBall(superPaddle, ball, false)
+                if (rectCircleColliding(superPaddle, ball) && !SUPER_LASER_IGNORE.includes(ball.type)) {
+                    if(ball.vx < 0 && ball.x < VIRTUAL_WIDTH - (1 + NUM_INITIAL_ROWS * BLOCK_SIZE)){
+                        hitBall(superPaddle, ball, false)
+                    }
                     if (ball.type === 'projectile') {
                         //kill projectiles
                         balls.splice(i, 1)
