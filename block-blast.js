@@ -41,7 +41,7 @@
     // const SUPER_MODE = false
     const SUPER_BONUS = 20 //Extra paddle height when collecting rainbow ball
     const SUPER_HEIGHT_FLUCTUATION = 0.1
-    const SUPER_EXPLOSION_EXEMPT = ['blocking', 'rainbow']
+    const SUPER_EXPLOSION_EXEMPT = ['normal', 'blocking', 'rainbow']
     const SUPER_LASER_IGNORE = ['blocking', 'rainbow']
 
     /* --- BALL/PROJECTILE PROPERTIES --- */
