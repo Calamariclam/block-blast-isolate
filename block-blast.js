@@ -1430,7 +1430,7 @@
             pinkPaddle.y = paul - paddle.y * ((paul) / (VIRTUAL_HEIGHT - paddle.h))
         }
         // Update super paddle
-        if(superPaddle.timer){
+        if(superPaddle.timer > 0){
             SUPER_MODE = true
             superPaddle.timer -= dt
             if(SUPER_TIMER_MAX - superPaddle.timer < SUPER_DURATIONS[0]){
@@ -1762,19 +1762,46 @@
             ctx.fillRect(netX, y, netWidth, segmentHeight)
         }
 
+        
+        // Draw Pink Paddle
+        if(pinkPaddle.h > 0)
+            drawRoundRect(pinkPaddle.x, pinkPaddle.y, pinkPaddle.w, pinkPaddle.h, Math.min(6, pinkPaddle.h), COLORS.PINK_T)
+        // Draw Diamond Paddle
+        if(diamondPaddle.bonus) //meant to appear under the main paddle
+            drawRoundRect(diamondPaddle.x, diamondPaddle.y, diamondPaddle.w, diamondPaddle.h, 6, COLORS.DIAMOND)
+
+        // Draw Paddle
+        drawRoundRect(paddle.x, paddle.y, paddle.w, paddle.h, 6, COLORS.WHITE_D)
+
+        //Draw Super Paddle
+        if(superPaddle.timer > 0){
+            let tt = SUPER_TIMER_MAX - superPaddle.timer
+            if(tt < SUPER_DURATIONS[0]){
+                let pxw = paddle.x + paddle.w
+                let pyh = paddle.y + paddle.h/2
+                ctx.beginPath()
+                ctx.strokeStyle = rainbowed
+                ctx.lineWidth = 3
+                ctx.arc(pxw, pyh, 60 * (superPaddle.timer % 0.5), 0, 2 * Math.PI)
+                ctx.stroke()
+                let pr = 50 * (SUPER_DURATIONS[0] - tt)
+                let pa = pyh / (Math.PI * 100)
+                for(let ppi = 0; ppi < 6; ppi++){
+                    ctx.beginPath()
+                    ctx.strokeStyle = rainbowed
+                    ctx.lineWidth = 2
+                    ctx.arc(pxw + pr * Math.cos(pa + ppi * Math.PI/6), pyh + pr * Math.sin(pa + ppi * Math.PI/6), 5, 0, 2 * Math.PI)
+                    ctx.stroke()
+                }
+            }else{
+                drawRoundRect(superPaddle.x, superPaddle.y, superPaddle.w, superPaddle.h, (superPaddle.h/4), rainbowed)
+            }
+        }
+        
         // Blocks
         for (const block of blocks) {
             block.display()
         }
-        // Pink Paddle
-        if(pinkPaddle.h > 0)
-            drawRoundRect(pinkPaddle.x, pinkPaddle.y, pinkPaddle.w, pinkPaddle.h, Math.min(6, pinkPaddle.h), COLORS.PINK_T)
-        // Diamond Paddle
-        if(diamondPaddle.bonus) //meant to appear under the main paddle
-            drawRoundRect(diamondPaddle.x, diamondPaddle.y, diamondPaddle.w, diamondPaddle.h, 6, COLORS.DIAMOND)
-
-        // Paddle
-        drawRoundRect(paddle.x, paddle.y, paddle.w, paddle.h, 6, COLORS.WHITE_D)
 
         // Balls
         for (const ball of balls) {
