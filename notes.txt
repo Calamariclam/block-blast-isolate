@@ -12,3 +12,4 @@
 - changed floaty text function to take in 'rainbow' (string) as a color, and adjusted rainbow scoring to match. 
 - added the laser phase of the super paddle
 - adjusted canvas size for main page, while maintaining larger size in subsite
+- normal balls duplicated by mitosis blocks during super mode now create 'pseudoNormal' balls, which are identical to 'normal' balls except they get deleted by the super explosion
