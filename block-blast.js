@@ -1260,11 +1260,10 @@
                     } else {
                         pulse = 0.8 + pulse * 0.2
                     }
-                    ctx.fillStyle = lerpHexColor(rainbowed, COLORS.WHITE, 0.5)
-                    console.log({ rainbowed, white: COLORS.WHITE, t: 0.5 })
-                    console.log(lerpHexColor(rainbowed, COLORS.WHITE, 0.5))
+                    ctx.fillStyle = lerpHexColor(rainbowed, COLORS.WHITE, 0.8)
                     ctx.arc(this.x, this.y, this.r * pulse * 1.5, 0, Math.PI * 2)
                     ctx.fill()
+                    ctx.beginPath()
                     ctx.fillStyle = rainbowed
                     ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
                     ctx.fill()
@@ -1323,7 +1322,7 @@
             ctx.save()
             ctx.beginPath()
             ctx.globalAlpha = 0.4
-            ctx.strokeStyle = lerpHexColor(rainbowed, COLORS.WHITE, 0.5)
+            ctx.strokeStyle = lerpHexColor(rainbowed, COLORS.WHITE, 0.8)
             ctx.lineWidth = this.r * 0.1
             ctx.arc(this.x, this.y, this.r * 0.95, 0, 2 * Math.PI)
             ctx.stroke()
