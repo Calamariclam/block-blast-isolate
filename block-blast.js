@@ -32,7 +32,7 @@
     const PINK_DEPLETION_RATE = 8 //The rate at which the pink paddle shrinks
 
     /* --- SUPER PADDLE AND STUFF --- */
-    const SUPER_WIDTH = 500
+    const SUPER_WIDTH = 1200
     const SUPER_DURATIONS = [3, 15, 5] //Charge time, fire time, shrink time
     const SUPER_TIMER_MAX = 23
     const SUPER_TIMER = 0
@@ -475,7 +475,7 @@
     }
     // super paddle AKA super paddle
     let superPaddle = {
-        x: 30,
+        x: 30 + PADDLE_WIDTH,
         y: 0, 
         w: SUPER_WIDTH,
         h: 0,
@@ -1810,9 +1810,9 @@
                 drawRoundRect(superPaddle.x, superPaddle.y + superPaddle.h - superPaddle.dih, superPaddle.w, superPaddle.dih, (superPaddle.h/4), rainbowed)
                 ctx.save()
                 ctx.globalAlpha = 0.3
-                drawRoundRect(superPaddle.x, superPaddle.y + (superPaddle.h - superPaddle.dih) * 0.75, superPaddle.w, (superPaddle.dih) * 0.75, (superPaddle.h/4), COLORS.WHITE)
-                drawRoundRect(superPaddle.x, superPaddle.y + (superPaddle.h - superPaddle.dih) * 0.5, superPaddle.w, (superPaddle.dih) * 0.5, (superPaddle.h/4), COLORS.WHITE)
-                drawRoundRect(superPaddle.x, superPaddle.y + (superPaddle.h - superPaddle.dih) * 0.15, superPaddle.w, (superPaddle.dih) * 0.15, (superPaddle.h/4), COLORS.WHITE)
+                drawRoundRect(superPaddle.x, superPaddle.y + (superPaddle.h - 0.75 * superPaddle.dih) / 2, superPaddle.w, (superPaddle.dih) * 0.75, (superPaddle.h/4), COLORS.WHITE)
+                drawRoundRect(superPaddle.x, superPaddle.y + (superPaddle.h - 0.5 * superPaddle.dih) / 2, superPaddle.w, (superPaddle.dih) * 0.5, (superPaddle.h/4), COLORS.WHITE)
+                drawRoundRect(superPaddle.x, superPaddle.y + (superPaddle.h - 0.15 * superPaddle.dih) / 2, superPaddle.w, (superPaddle.dih) * 0.15, (superPaddle.h/4), COLORS.WHITE)
                 ctx.restore()
             }
         }
