@@ -296,18 +296,18 @@
     const MAX_WIDTH = 2000
     const MAX_HEIGHT = 1000
     const computedStyle = window.getComputedStyle(canvas);
-    const cssMaxWidth = parseFloat(computedStyle.maxWidth);
-    const cssMaxHeight = parseFloat(computedStyle.maxHeight);
-    console.log(cssMaxWidth)
-    console.log(cssMaxHeight)
+    const cssMaxWidth = computedStyle.maxWidth;
+    const cssMaxHeight = computedStyle.maxHeight;
+    console.log("mw: " + cssMaxWidth)
+    console.log("mh: " + cssMaxHeight)
     
     let lastTime = performance.now() // Time since last frame for delta time calculation
 
     window.addEventListener('resize', resizeCanvas)
     function resizeCanvas() {
         // Find target canvas size from the available window and maximum size
-        const targetWidth = Math.min(window.innerWidth - 40, MAX_WIDTH, cssMaxWidth)
-        const targetHeight = Math.min(window.innerHeight - 140, MAX_HEIGHT, cssMaxHeight)
+        const targetWidth = Math.min(window.innerWidth - 40, MAX_WIDTH, (cssMaxWidth ? cssMaxWidth : MAX_WIDTH))
+        const targetHeight = Math.min(window.innerHeight - 140, MAX_HEIGHT, (cssMaxHeight ? cssMaxHeight : MAX_HEIGHT))
         const targetScale = Math.min(
             targetWidth / VIRTUAL_WIDTH,
             targetHeight / VIRTUAL_HEIGHT,
