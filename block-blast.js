@@ -112,7 +112,7 @@
     const DIAMOND_BLOCK_WEIGHT = 0.5 //the light blue blocks
     const PINK_BLOCK_WEIGHT = 0.08
     const BLOCKING_BLOCK_WEIGHT = 0.04
-    const RAINBOW_BLOCK_WEIGHT = 0.5 //0.002
+    const RAINBOW_BLOCK_WEIGHT = 0.002
     const TOTAL_SPECIAL_WEIGHT =
         PROJECTILE_BLOCK_WEIGHT +
         BOMB_BLOCK_WEIGHT +
