@@ -17,3 +17,4 @@
 
 10/13/2026
 - more canvas size fitting tweaking because it keeps doing nothing
+- removed portion of code that was causing blocks to be deleted when they were being pushed forwards too fast
