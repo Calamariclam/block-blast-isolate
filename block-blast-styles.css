@@ -40,8 +40,7 @@
     box-shadow:
         0 6px 28px rgba(0, 0, 0, 0.6),
         inset 0 1px 0 rgba(255, 255, 255, 0.02);
-    width: 1200;
-    height: 600;
+    max-width: 50%;
     background: linear-gradient(180deg,
             rgba(255, 255, 255, 0.02),
             rgba(255, 255, 255, 0.01));
