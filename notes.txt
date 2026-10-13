@@ -14,3 +14,6 @@
 - adjusted canvas size for main page, while maintaining larger size in subsite
 - normal balls duplicated by mitosis blocks during super mode now create 'pseudoNormal' balls, which are identical to 'normal' balls except they get deleted by the super explosion
 - greatly decreased rainbow block spawn rate, decreased blocking ball spawn rate
+
+10/13/2026
+- more canvas size fitting tweaking because it keeps doing nothing
