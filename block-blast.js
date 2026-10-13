@@ -112,7 +112,7 @@
     const DIAMOND_BLOCK_WEIGHT = 0.5 //the light blue blocks
     const PINK_BLOCK_WEIGHT = 0.08
     const BLOCKING_BLOCK_WEIGHT = 0.04
-    const RAINBOW_BLOCK_WEIGHT = 0.002
+    const RAINBOW_BLOCK_WEIGHT = 0.5 //0.002
     const TOTAL_SPECIAL_WEIGHT =
         PROJECTILE_BLOCK_WEIGHT +
         BOMB_BLOCK_WEIGHT +
@@ -1758,13 +1758,13 @@
             for (const block of blocks) {
                 block.x = Math.round(block.x / BLOCK_SIZE) * BLOCK_SIZE
             }
-            // Remove blocks that are too far right (outside the game area, likely old/redundant)
-            for (let i = blocks.length - 1; i >= 0; i--) {
-                if (blocks[i].x >= VIRTUAL_WIDTH) {
-                    // Assuming VIRTUAL_WIDTH is the right edge of the playing area
-                    blocks.splice(i, 1)
-                }
-            }
+            // // Remove blocks that are too far right (outside the game area, likely old/redundant)
+            // for (let i = blocks.length - 1; i >= 0; i--) {
+            //     if (blocks[i].x >= VIRTUAL_WIDTH) {
+            //         // Assuming VIRTUAL_WIDTH is the right edge of the playing area
+            //         blocks.splice(i, 1)
+            //     }
+            // }
         }
 
         // Check for normal ball loss and game over
