@@ -226,6 +226,8 @@
     // let resetButton = new button(500 + 110, 300, 200, 60, 'Restart', reset, 'enter')
     let infoButtons = new buttonGroup({
         back: new button(20, 20, 200, 60, 'Back', back, "escape"),
+        nextPage: new button(20, 520, 200, 60, 'Next', () => infoPage++, "arrowright"),
+        prevPage: new button(880, 520, 200, 60, 'Previous', () => infoPage--, "arrowleft")
     })
     
     let currentScene = GAME_SCENE_NAME
@@ -388,23 +390,25 @@
     })
 
     /* --- INFO MENU SETUP -- */
+    const INFO_PAGES = 2
+    let infoPage = 1
     const X_MARGIN = 50
-    const Y_MARGIN = 80
+    const Y_MARGIN = 100
     const INFO_ROWS = 5
-    const INFO_COLS = 4
+    const INFO_COLS = 2
     const X_SPACING = (VIRTUAL_WIDTH - X_MARGIN * 2) / INFO_COLS
     const Y_SPACING = (VIRTUAL_HEIGHT - Y_MARGIN * 2) / INFO_ROWS
     const INFO_BLOCKS = [
-        new Block(X_MARGIN, Y_MARGIN, BLOCK_SIZE, BLOCK_SIZE),
-        new Block(X_MARGIN, Y_MARGIN + Y_SPACING, BLOCK_SIZE, BLOCK_SIZE),
-        new Block(X_MARGIN, Y_MARGIN + Y_SPACING * 2, BLOCK_SIZE, BLOCK_SIZE),
-        new Block(X_MARGIN, Y_MARGIN + Y_SPACING * 3, BLOCK_SIZE, BLOCK_SIZE),
-        new Block(X_MARGIN, Y_MARGIN + Y_SPACING * 4, BLOCK_SIZE, BLOCK_SIZE),
-        new Block(X_MARGIN + X_SPACING, Y_MARGIN, BLOCK_SIZE, BLOCK_SIZE),
-        new Block(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING, BLOCK_SIZE, BLOCK_SIZE),
-        new Block(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING * 2, BLOCK_SIZE, BLOCK_SIZE),
-        new Block(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING * 3, BLOCK_SIZE, BLOCK_SIZE),
-        new Block(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING * 4, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN - BLOCK_SIZE/2, Y_MARGIN - BLOCK_SIZE/2, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN - BLOCK_SIZE/2, Y_MARGIN - BLOCK_SIZE/2 + Y_SPACING, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN - BLOCK_SIZE/2, Y_MARGIN - BLOCK_SIZE/2 + Y_SPACING * 2, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN - BLOCK_SIZE/2, Y_MARGIN - BLOCK_SIZE/2 + Y_SPACING * 3, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN - BLOCK_SIZE/2, Y_MARGIN - BLOCK_SIZE/2 + Y_SPACING * 4, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN - BLOCK_SIZE/2 + X_SPACING, Y_MARGIN - BLOCK_SIZE/2, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN - BLOCK_SIZE/2 + X_SPACING, Y_MARGIN - BLOCK_SIZE/2 + Y_SPACING, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN - BLOCK_SIZE/2 + X_SPACING, Y_MARGIN - BLOCK_SIZE/2 + Y_SPACING * 2, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN - BLOCK_SIZE/2 + X_SPACING, Y_MARGIN - BLOCK_SIZE/2 + Y_SPACING * 3, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN - BLOCK_SIZE/2 + X_SPACING, Y_MARGIN - BLOCK_SIZE/2 + Y_SPACING * 4, BLOCK_SIZE, BLOCK_SIZE),
     ]
     INFO_BLOCKS[0].type = 'normal'
     INFO_BLOCKS[1].type = 'projectile'
@@ -427,6 +431,9 @@
         new Ball(X_MARGIN + X_SPACING * 3, Y_MARGIN + Y_SPACING, BALL_RADIUS, 'blocking'),
         new Ball(X_MARGIN + X_SPACING * 3, Y_MARGIN + Y_SPACING * 2, BALL_RADIUS, 'rainbow'),
     ]
+    INFO_BALLS[4].vx = DIAMOND_SPEED / 2
+    INFO_BALLS[6].ballsHitCount = 0
+    INFO_BALLS[6].vx = BLOCKING_SPEED / 2
 
     /* --- USER INPUT HANDLING --- */
     let mousePosition = { x: 0, y: 0 }
@@ -1944,7 +1951,10 @@
         resetButtons.update()
     }
     function updateInfo(){
+        colorTimer+=0.01
+        rainbowed = rainbow(colorTimer)
         infoButtons.update()
+        infoPage = Math.min(Math.max(1, infoPage), INFO_PAGES)
     }
 
     /* --- DISPLAY FUNCTIONS --- */
@@ -2153,37 +2163,41 @@
         ctx.textAlign = 'center'
         ctx.fillText('INFORMATION', VIRTUAL_WIDTH / 2, 50)
 
-        for(const block of INFO_BLOCKS){
-            block.display()
-        }
-        for(const ball of INFO_BALLS){
-            ball.display()
-        }
-
-        // Instructions
+        // Information
         ctx.font = '20px system-ui, sans-serif'
         ctx.textAlign = 'left'
         ctx.fillStyle = COLORS.GRAY_L
-        ctx.fillText('block', X_MARGIN + 30, Y_MARGIN)
-        ctx.fillText('block', X_MARGIN + 30, Y_MARGIN + Y_SPACING)
-        ctx.fillText('block', X_MARGIN + 30, Y_MARGIN + Y_SPACING * 2)
-        ctx.fillText('block', X_MARGIN + 30, Y_MARGIN + Y_SPACING * 3)
-        ctx.fillText('block', X_MARGIN + 30, Y_MARGIN + Y_SPACING * 4)
-        ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN)
-        ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN + Y_SPACING)
-        ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN + Y_SPACING * 2)
-        ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN + Y_SPACING * 3)
-        ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN + Y_SPACING * 4)
-
-        ctx.fillText('ball', X_MARGIN + X_SPACING * 2 + 30, Y_MARGIN)
-        ctx.fillText('ball', X_MARGIN + X_SPACING * 2 + 30, Y_MARGIN + Y_SPACING)
-        ctx.fillText('ball', X_MARGIN + X_SPACING * 2 + 30, Y_MARGIN + Y_SPACING * 2)
-        ctx.fillText('ball', X_MARGIN + X_SPACING * 2 + 30, Y_MARGIN + Y_SPACING * 3)
-        ctx.fillText('ball', X_MARGIN + X_SPACING * 2 + 30, Y_MARGIN + Y_SPACING * 4)
-        ctx.fillText('ball', X_MARGIN + X_SPACING * 3 + 30, Y_MARGIN)
-        ctx.fillText('ball', X_MARGIN + X_SPACING * 3 + 30, Y_MARGIN + Y_SPACING)
-        ctx.fillText('ball', X_MARGIN + X_SPACING * 3 + 30, Y_MARGIN + Y_SPACING * 2)
-
+        switch(infoPage){
+            case 1:
+                for(const block of INFO_BLOCKS){
+                    block.display()
+                }
+                ctx.fillText('block', X_MARGIN + 30, Y_MARGIN)
+                ctx.fillText('block', X_MARGIN + 30, Y_MARGIN + Y_SPACING)
+                ctx.fillText('block', X_MARGIN + 30, Y_MARGIN + Y_SPACING * 2)
+                ctx.fillText('block', X_MARGIN + 30, Y_MARGIN + Y_SPACING * 3)
+                ctx.fillText('block', X_MARGIN + 30, Y_MARGIN + Y_SPACING * 4)
+                ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN)
+                ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN + Y_SPACING)
+                ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN + Y_SPACING * 2)
+                ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN + Y_SPACING * 3)
+                ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN + Y_SPACING * 4)
+                break;
+            case 2: 
+                for(const ball of INFO_BALLS){
+                    ball.display()
+                }
+                ctx.fillText('ball', X_MARGIN + X_SPACING * 2 + 30, Y_MARGIN)
+                ctx.fillText('ball', X_MARGIN + X_SPACING * 2 + 30, Y_MARGIN + Y_SPACING)
+                ctx.fillText('ball', X_MARGIN + X_SPACING * 2 + 30, Y_MARGIN + Y_SPACING * 2)
+                ctx.fillText('ball', X_MARGIN + X_SPACING * 2 + 30, Y_MARGIN + Y_SPACING * 3)
+                ctx.fillText('ball', X_MARGIN + X_SPACING * 2 + 30, Y_MARGIN + Y_SPACING * 4)
+                ctx.fillText('ball', X_MARGIN + X_SPACING * 3 + 30, Y_MARGIN)
+                ctx.fillText('ball', X_MARGIN + X_SPACING * 3 + 30, Y_MARGIN + Y_SPACING)
+                ctx.fillText('ball', X_MARGIN + X_SPACING * 3 + 30, Y_MARGIN + Y_SPACING * 2)
+                break;
+        }
+      
         // Button
         infoButtons.display()
     }
