@@ -170,6 +170,16 @@
                 10,
                 btnColor,
             )
+            if(this.isHovering)
+                strokeRoundRect(
+                    this.x - 5,
+                    this.y - 5,
+                    this.w + 10,
+                    this.h + 10,
+                    15,
+                    btnColor,
+                    5,
+                )
 
             // Button text
             ctx.fillStyle = COLORS.BLACK
@@ -539,6 +549,36 @@
         ctx.arcTo(x, y, x + w, y, radius)
         ctx.closePath()
         ctx.fill()
+    }
+    function strokeRoundRect(x, y, w, h, r, strokeStyle, lineWidth) {
+        ctx.strokeStyle = strokeStyle
+        ctx.lineWidth = lineWidth
+        
+        const radius = Math.min(r, w / 2, h / 2)
+        ctx.beginPath()
+        ctx.moveTo(x + radius, y)
+        ctx.arcTo(x + w, y, x + w, y + h, radius)
+        ctx.arcTo(x + w, y + h, x, y + h, radius)
+        ctx.arcTo(x, y + h, x, y, radius)
+        ctx.arcTo(x, y, x + w, y, radius)
+        ctx.closePath()
+        ctx.stroke()
+    }
+    function fillStrokeRoundRect(x, y, w, h, r, fillStyle, strokeStyle, lineWidth) {
+        ctx.fillStyle = fillStyle
+        ctx.strokeStyle = strokeStyle
+        ctx.lineWidth = lineWidth
+        
+        const radius = Math.min(r, w / 2, h / 2)
+        ctx.beginPath()
+        ctx.moveTo(x + radius, y)
+        ctx.arcTo(x + w, y, x + w, y + h, radius)
+        ctx.arcTo(x + w, y + h, x, y + h, radius)
+        ctx.arcTo(x, y + h, x, y, radius)
+        ctx.arcTo(x, y, x + w, y, radius)
+        ctx.closePath()
+        ctx.fill()
+        ctx.stroke()
     }
     //helper to draw regular polygon
     function drawRegularPoly(x, y, points, r, fillStyle, angle = 0){
