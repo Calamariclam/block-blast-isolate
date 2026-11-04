@@ -192,6 +192,7 @@
     let currentScene = GAME_SCENE_NAME
     let livesLostCount = 0
     let currentScore = 0
+    let highScore = 0
     let isGameOver = false
     let blocksAreAdvancing = false
     let isPaused = false
@@ -1782,6 +1783,9 @@
         }
 
         if (livesLostCount >= MAX_LIVES) {
+            if(currentScore > highScore){
+                highScore = currentScore //save high score
+            }
             isGameOver = true
         }
 
