@@ -193,13 +193,43 @@
             )
         }
     }
+    function buttonGroup(buttons){
+        this.buttons = buttons
+        this.update = function(){
+            for(const part of Object.values(this.buttons)){
+                part.update()
+            }
+        }
+        this.display = function(){
+            for(const part of Object.values(this.buttons)){
+                part.display()
+            }
+        }
+    }
 
     /* --- GAME STATE VARIABLES --- */
     // const menuButton = { x: 500, y: 350, w: 200, h: 60, isHovering: false }
-    let menuButton = new button(500, 350, 200, 60, 'Start Game', reset, " ")
-    let resumeButton = new button(500 - 110, 350, 200, 60, 'Cancel', resume, " ")
-    let resetButton = new button(500 + 110, 350, 200, 60, 'Restart', reset, 'enter')
+    let menuButtons = new buttonGroup({
+        start: new button(500, 350, 200, 60, 'Start Game', reset, " "),
+        info: new button(500, 430, 200, 60, 'More Info', info, "i")
+    })
+    // let menuButton = new button(500, 350, 200, 60, 'Start Game', reset, " ")
+    // let infoButton = new button(500, 430, 200, 60, 'More Info', info, "i")
+    let resetButtons = new buttonGroup({
+        resume: new button(500 - 110, 300, 200, 60, 'Cancel', resume, " "),
+        reset: new button(500 + 110, 300, 200, 60, 'Restart', reset, 'enter'),
+        menu: new button(500 - 110, 380, 200, 60, 'Menu', menu, "m"),
+        info: new button(500 + 110, 380, 200, 60, 'Cancel', info, "i")
+    })
+    
+    // let resumeButton = new button(500 - 110, 300, 200, 60, 'Cancel', resume, " ")
+    // let resetButton = new button(500 + 110, 300, 200, 60, 'Restart', reset, 'enter')
+    let infoButtons = new buttonGroup({
+        back: new button(20, 20, 200, 60, 'Back', back, "escape"),
+    })
+    
     let currentScene = GAME_SCENE_NAME
+    let previousScene = GAME_SCENE_NAME
     let livesLostCount = 0
     let currentScore = 0
     let highScore = 0
@@ -217,6 +247,7 @@
     /* --- GAME MANAGEMENT FUNCTIONS --- */
     function startGame() {
         currentScene = GAME_SCENE_NAME
+        previousScene = currentScene
         currentScore = 0
         isGameOver = false
         paddle.y = (VIRTUAL_HEIGHT - PADDLE_HEIGHT_INITIAL) / 2
@@ -236,14 +267,30 @@
         projectileTimer = 0
     }
     function considerReset() {
+        previousScene = currentScene
         currentScene = 'maybeReset'
     }
     function reset(){
+        previousScene = currentScene
         startGame()
         currentScene = 'game'
     }
     function resume(){
+        previousScene = currentScene
         currentScene = 'game'
+    }
+    function info(){
+        previousScene = currentScene
+        currentScene = 'info'
+    }
+    function menu(){
+        previousScene = currentScene
+        currentScene = 'menu'
+    }
+    function back(){
+        let temp = currentScene
+        currentScene = previousScene
+        previousScene = temp
     }
 
     function die() { //Clear all balls and reset paddle and serving ball, but maintain blocks
@@ -1441,6 +1488,11 @@
                 updateReset()
                 drawReset()
                 break
+
+            case 'info':
+                updateInfo()
+                drawInfo()
+                break
         }
         releasedKeys = {}
         isMouseClicked = false
@@ -1845,11 +1897,13 @@
 
     function updateMenu() {
         // Check if the mouse is inside the button's boundaries
-        menuButton.update()
+        menuButtons.update()
     }
     function updateReset() {
-        resumeButton.update()
-        resetButton.update()
+        resetButtons.update()
+    }
+    function updateInfo(){
+        infoButtons.update()
     }
 
     /* --- DISPLAY FUNCTIONS --- */
@@ -2029,7 +2083,7 @@
 
 
         // Button
-        menuButton.display()
+        menuButtons.display()
     }
 
     function drawReset() {
@@ -2044,8 +2098,22 @@
         ctx.fillText('Confirm Reset?', VIRTUAL_WIDTH / 2, 200)
 
         // Button
-        resumeButton.display()
-        resetButton.display()
+        resetButtons.display()
+    }
+
+    function drawInfo() {
+        // Background
+        ctx.fillStyle = COLORS.BLACK
+        ctx.fillRect(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
+
+        // Title
+        ctx.fillStyle = COLORS.WHITE_D
+        ctx.font = '60px system-ui, sans-serif'
+        ctx.textAlign = 'center'
+        ctx.fillText('TEMPORARY TEXT', VIRTUAL_WIDTH / 2, 200)
+
+        // Button
+        infoButtons.display()
     }
 
     function pauseGame() {
