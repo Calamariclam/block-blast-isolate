@@ -393,7 +393,7 @@
     const INFO_PAGES = 2
     let infoPage = 1
     const X_MARGIN = 50
-    const Y_MARGIN = 100
+    const Y_MARGIN = 110
     const INFO_ROWS = 5
     const INFO_COLS = 2
     const X_SPACING = (VIRTUAL_WIDTH - X_MARGIN * 2) / INFO_COLS
@@ -431,9 +431,11 @@
         new Ball(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING, BALL_RADIUS, 'blocking'),
         new Ball(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING * 2, BALL_RADIUS, 'rainbow'),
     ]
+    INFO_BALLS[3].blocksHitCount = 0
     INFO_BALLS[4].vx = DIAMOND_SPEED / 2
     INFO_BALLS[6].ballsHitCount = 0
     INFO_BALLS[6].vx = BLOCKING_SPEED / 2
+    INFO_BALLS[6].r = BLOCKING_RADIUS_MAX
 
     /* --- USER INPUT HANDLING --- */
     let mousePosition = { x: 0, y: 0 }
