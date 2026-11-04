@@ -2162,6 +2162,8 @@
         ctx.font = '60px system-ui, sans-serif'
         ctx.textAlign = 'center'
         ctx.fillText('INFORMATION', VIRTUAL_WIDTH / 2, 50)
+        // Subtitle
+        ctx.fillText('High Score: ' + highScore, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 50)
 
         // Information
         ctx.font = '20px system-ui, sans-serif'
