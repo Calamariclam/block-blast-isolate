@@ -226,8 +226,8 @@
     // let resetButton = new button(500 + 110, 300, 200, 60, 'Restart', reset, 'enter')
     let infoButtons = new buttonGroup({
         back: new button(20, 20, 200, 60, 'Back', back, "escape"),
-        nextPage: new button(20, 520, 200, 60, 'Next', () => infoPage++, "arrowright"),
-        prevPage: new button(880, 520, 200, 60, 'Previous', () => infoPage--, "arrowleft")
+        nextPage: new button(980, 520, 200, 60, 'Next', () => infoPage++, "arrowright"),
+        prevPage: new button(20, 520, 200, 60, 'Previous', () => infoPage--, "arrowleft")
     })
     
     let currentScene = GAME_SCENE_NAME
