@@ -430,6 +430,8 @@
         new Ball(X_MARGIN + X_SPACING, Y_MARGIN, BALL_RADIUS, 'pink'),
         new Ball(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING, BALL_RADIUS, 'blocking'),
         new Ball(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING * 2, BALL_RADIUS, 'rainbow'),
+        new Ball(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING * 3, BALL_RADIUS, 'pseudoNormal'),
+        new Ball(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING * 4, BALL_RADIUS, 'pseudoRainbow')
     ]
     INFO_BALLS[3].blocksHitCount = 0
     INFO_BALLS[4].vx = DIAMOND_SPEED / 2
@@ -1418,7 +1420,12 @@
                     ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
                     ctx.fill()
                     break
-                default: // 'normal' ball
+                case 'pseudoRainbow':
+                    ctx.fillStyle = rainbowed
+                    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
+                    ctx.fill()
+                    break;
+                default: // 'normal' ball and pseudoNormal
                     ctx.fillStyle = COLORS.WHITE
                     ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
                     ctx.fill()
@@ -1707,8 +1714,21 @@
                             superPaddle.timer = SUPER_TIMER_MAX
                         }
                         
+                        for (let i = 0; i < 3; i++) {
+                            const angle = generateAngle(MIN_BOUNCE_ANGLE) // Could be adjusted
+                            const sBall = new Ball(
+                                ball.x,
+                                ball.y,
+                                BALL_RADIUS,
+                                'pseudoRainbow',
+                            )
+                            sBall.vx = BALL_SPEED * Math.cos(angle)
+                            sBall.vy = BALL_SPEED * Math.sin(angle)
+                            balls.push(sBall)
+                        }
                         //delete the ball
                         balls.splice(i, 1)
+                        
                         continue
                     }
                     if (ball.type === 'diamond') {
@@ -2202,6 +2222,8 @@
                 ctx.fillText('ball', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN)
                 ctx.fillText('ball', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING)
                 ctx.fillText('ball', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 2)
+                ctx.fillText('ball', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3)
+                ctx.fillText('ball', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4)
                 break;
         }
       
