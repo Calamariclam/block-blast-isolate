@@ -124,6 +124,47 @@
         BLOCKING_BLOCK_WEIGHT + 
         RAINBOW_BLOCK_WEIGHT
 
+    /* --- INFO MENU STUFF -- */
+    const X_MARGIN = 50
+    const Y_MARGIN = 80
+    const INFO_ROWS = 5
+    const INFO_COLS = 4
+    const X_SPACING = (VIRTUAL_WIDTH - X_MARGIN * 2) / INFO_COLS
+    const Y_SPACING = (VIRTUAL_HEIGHT - Y_MARGIN * 2) / INFO_ROWS
+    const INFO_BLOCKS = [
+        new Block(X_MARGIN, Y_MARGIN, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN, Y_MARGIN + Y_SPACING, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN, Y_MARGIN + Y_SPACING * 2, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN, Y_MARGIN + Y_SPACING * 3, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN, Y_MARGIN + Y_SPACING * 4, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN + X_SPACING, Y_MARGIN, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING * 2, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING * 3, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING * 4, BLOCK_SIZE, BLOCK_SIZE),
+    ]
+    INFO_BLOCKS[0].type = 'normal'
+    INFO_BLOCKS[1].type = 'projectile'
+    INFO_BLOCKS[2].type = 'bomb'
+    INFO_BLOCKS[3].type = 'piercing'
+    INFO_BLOCKS[4].type = 'diamond'
+    INFO_BLOCKS[5].type = 'pink'
+    INFO_BLOCKS[6].type = 'blocking'
+    INFO_BLOCKS[7].type = 'rainbow'
+    INFO_BLOCKS[8].type = 'mitosis'
+    INFO_BLOCKS[9].type = 'explode'
+
+    const INFO_BALLS = [//x, y, radius, type
+        new Ball(X_MARGIN + X_SPACING * 2, Y_MARGIN, BALL_RADIUS, 'normal'),
+        new Ball(X_MARGIN + X_SPACING * 2, Y_MARGIN + Y_SPACING, BALL_RADIUS, 'projectile'),
+        new Ball(X_MARGIN + X_SPACING * 2, Y_MARGIN + Y_SPACING * 2, BALL_RADIUS, 'bomb'),
+        new Ball(X_MARGIN + X_SPACING * 2, Y_MARGIN + Y_SPACING * 3, BALL_RADIUS, 'piercing'),
+        new Ball(X_MARGIN + X_SPACING * 2, Y_MARGIN + Y_SPACING * 4, BALL_RADIUS, 'diamond'),
+        new Ball(X_MARGIN + X_SPACING * 3, Y_MARGIN, BALL_RADIUS, 'pink'),
+        new Ball(X_MARGIN + X_SPACING * 3, Y_MARGIN + Y_SPACING, BALL_RADIUS, 'blocking'),
+        new Ball(X_MARGIN + X_SPACING * 3, Y_MARGIN + Y_SPACING * 2, BALL_RADIUS, 'rainbow'),
+    ]
+
     /* --- BUTTON --- */
     function hotkey(key, effect){
         if(releasedKeys[key]){
@@ -219,7 +260,7 @@
         resume: new button(500 - 110, 300, 200, 60, 'Cancel', resume, " "),
         reset: new button(500 + 110, 300, 200, 60, 'Restart', reset, 'enter'),
         menu: new button(500 - 110, 380, 200, 60, 'Menu', menu, "m"),
-        info: new button(500 + 110, 380, 200, 60, 'Cancel', info, "i")
+        info: new button(500 + 110, 380, 200, 60, 'More Info', info, "i")
     })
     
     // let resumeButton = new button(500 - 110, 300, 200, 60, 'Cancel', resume, " ")
@@ -2110,7 +2151,38 @@
         ctx.fillStyle = COLORS.WHITE_D
         ctx.font = '60px system-ui, sans-serif'
         ctx.textAlign = 'center'
-        ctx.fillText('TEMPORARY TEXT', VIRTUAL_WIDTH / 2, 200)
+        ctx.fillText('INFORMATION', VIRTUAL_WIDTH / 2, 50)
+
+        for(const block of INFO_BLOCKS){
+            block.display()
+        }
+        for(const ball of INFO_BALLS){
+            ball.display()
+        }
+
+        // Instructions
+        ctx.font = '20px system-ui, sans-serif'
+        ctx.textAlign = 'left'
+        ctx.fillStyle = COLORS.GRAY_L
+        ctx.fillText('block', X_MARGIN + 30, Y_MARGIN)
+        ctx.fillText('block', X_MARGIN + 30, Y_MARGIN + Y_SPACING)
+        ctx.fillText('block', X_MARGIN + 30, Y_MARGIN + Y_SPACING * 2)
+        ctx.fillText('block', X_MARGIN + 30, Y_MARGIN + Y_SPACING * 3)
+        ctx.fillText('block', X_MARGIN + 30, Y_MARGIN + Y_SPACING * 4)
+        ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN)
+        ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN + Y_SPACING)
+        ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN + Y_SPACING * 2)
+        ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN + Y_SPACING * 3)
+        ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN + Y_SPACING * 4)
+
+        ctx.fillText('ball', X_MARGIN + X_SPACING * 2 + 30, Y_MARGIN)
+        ctx.fillText('ball', X_MARGIN + X_SPACING * 2 + 30, Y_MARGIN + Y_SPACING)
+        ctx.fillText('ball', X_MARGIN + X_SPACING * 2 + 30, Y_MARGIN + Y_SPACING * 2)
+        ctx.fillText('ball', X_MARGIN + X_SPACING * 2 + 30, Y_MARGIN + Y_SPACING * 3)
+        ctx.fillText('ball', X_MARGIN + X_SPACING * 2 + 30, Y_MARGIN + Y_SPACING * 4)
+        ctx.fillText('ball', X_MARGIN + X_SPACING * 3 + 30, Y_MARGIN)
+        ctx.fillText('ball', X_MARGIN + X_SPACING * 3 + 30, Y_MARGIN + Y_SPACING)
+        ctx.fillText('ball', X_MARGIN + X_SPACING * 3 + 30, Y_MARGIN + Y_SPACING * 2)
 
         // Button
         infoButtons.display()
