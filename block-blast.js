@@ -1505,6 +1505,8 @@
                 score(1, 'rainbow')
             }if(ball.type === 'diamond'){
                 score(2, 'rainbow')
+            }if(ball.type === 'pseudoRainbow'){
+                //nothing
             }else{
                 score(5, 'rainbow')
             }
