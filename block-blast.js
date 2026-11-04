@@ -2169,6 +2169,7 @@
         ctx.fillText('High Score: ' + highScore, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 30)
 
         // Information
+        const SHIFT = 40
         ctx.font = '20px system-ui, sans-serif'
         ctx.textAlign = 'left'
         switch(infoPage){
@@ -2177,30 +2178,30 @@
                     block.display()
                 }
                 ctx.fillStyle = COLORS.GRAY_L
-                ctx.fillText('block', X_MARGIN + 30, Y_MARGIN)
-                ctx.fillText('block', X_MARGIN + 30, Y_MARGIN + Y_SPACING)
-                ctx.fillText('block', X_MARGIN + 30, Y_MARGIN + Y_SPACING * 2)
-                ctx.fillText('block', X_MARGIN + 30, Y_MARGIN + Y_SPACING * 3)
-                ctx.fillText('block', X_MARGIN + 30, Y_MARGIN + Y_SPACING * 4)
-                ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN)
-                ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN + Y_SPACING)
-                ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN + Y_SPACING * 2)
-                ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN + Y_SPACING * 3)
-                ctx.fillText('block', X_MARGIN + X_SPACING + 30, Y_MARGIN + Y_SPACING * 4)
+                ctx.fillText('block', X_MARGIN + SHIFT, Y_MARGIN)
+                ctx.fillText('block', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING)
+                ctx.fillText('block', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 2)
+                ctx.fillText('block', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 3)
+                ctx.fillText('block', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 4)
+                ctx.fillText('block', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN)
+                ctx.fillText('block', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING)
+                ctx.fillText('block', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 2)
+                ctx.fillText('block', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3)
+                ctx.fillText('block', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4)
                 break;
             case 2: 
                 for(const ball of INFO_BALLS){
                     ball.display()
                 }
                 ctx.fillStyle = COLORS.GRAY_L
-                ctx.fillText('ball', X_MARGIN + 30, Y_MARGIN)
-                ctx.fillText('ball', X_MARGIN + 30, Y_MARGIN + Y_SPACING)
-                ctx.fillText('ball', X_MARGIN + 30, Y_MARGIN + Y_SPACING * 2)
-                ctx.fillText('ball', X_MARGIN + 30, Y_MARGIN + Y_SPACING * 3)
-                ctx.fillText('ball', X_MARGIN + 30, Y_MARGIN + Y_SPACING * 4)
-                ctx.fillText('ball', X_MARGIN + X_SPACING + 30, Y_MARGIN)
-                ctx.fillText('ball', X_MARGIN + X_SPACING + 30, Y_MARGIN + Y_SPACING)
-                ctx.fillText('ball', X_MARGIN + X_SPACING + 30, Y_MARGIN + Y_SPACING * 2)
+                ctx.fillText('ball', X_MARGIN + SHIFT, Y_MARGIN)
+                ctx.fillText('ball', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING)
+                ctx.fillText('ball', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 2)
+                ctx.fillText('ball', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 3)
+                ctx.fillText('ball', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 4)
+                ctx.fillText('ball', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN)
+                ctx.fillText('ball', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING)
+                ctx.fillText('ball', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 2)
                 break;
         }
       
