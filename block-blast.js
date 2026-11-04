@@ -1625,9 +1625,22 @@
                         )
                         brokenBlockParticles.push(particle)
                     }
+                    for (let i = 0; i < 4; i++) {
+                        const angle = generateAngle(MIN_BOUNCE_ANGLE) // Could be adjusted
+                        const sBall = new Ball(
+                            paddle.x,
+                            paddle.y + paddle.h / 2,
+                            BALL_RADIUS,
+                            'pseudoRainbow',
+                        )
+                        sBall.vx = BALL_SPEED * Math.cos(angle)
+                        sBall.vy = BALL_SPEED * Math.sin(angle)
+                        balls.push(sBall)
+                    }
                 }
                 superMode = true
                 superPaddle.h = paddle.h
+                
             }else if(SUPER_TIMER_MAX - superPaddle.timer < SUPER_DURATIONS[0] + SUPER_DURATIONS[1] + SUPER_DURATIONS[2]){
                 superMode = true
                 superPaddle.h = paddle.h * (superPaddle.timer / SUPER_DURATIONS[2])
@@ -1710,22 +1723,23 @@
                         paddle.h += SUPER_BONUS
                         if(superPaddle.timer > 0){ //If it's already on, skip the charging phase
                             superPaddle.timer = SUPER_TIMER_MAX - SUPER_DURATIONS[0]
+                            // create pseudo rainbow balls
+                            for (let i = 0; i < 4; i++) {
+                                const angle = generateAngle(MIN_BOUNCE_ANGLE) // Could be adjusted
+                                const sBall = new Ball(
+                                    paddle.x,
+                                    paddle.y + paddle.h / 2,
+                                    BALL_RADIUS,
+                                    'pseudoRainbow',
+                                )
+                                sBall.vx = BALL_SPEED * Math.cos(angle)
+                                sBall.vy = BALL_SPEED * Math.sin(angle)
+                                balls.push(sBall)
+                            }
                         }else{
                             superPaddle.timer = SUPER_TIMER_MAX
                         }
                         
-                        for (let i = 0; i < 3; i++) {
-                            const angle = generateAngle(MIN_BOUNCE_ANGLE) // Could be adjusted
-                            const sBall = new Ball(
-                                ball.x,
-                                ball.y,
-                                BALL_RADIUS,
-                                'pseudoRainbow',
-                            )
-                            sBall.vx = BALL_SPEED * Math.cos(angle)
-                            sBall.vy = BALL_SPEED * Math.sin(angle)
-                            balls.push(sBall)
-                        }
                         //delete the ball
                         balls.splice(i, 1)
                         
