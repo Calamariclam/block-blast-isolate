@@ -226,7 +226,7 @@
     // let resetButton = new button(500 + 110, 300, 200, 60, 'Restart', reset, 'enter')
     let infoButtons = new buttonGroup({
         back: new button(20, 20, 180, 50, 'Back', back, "escape"),
-        nextPage: new button(980, 550, 180, 50, 'Next', () => infoPage++, "arrowright"),
+        nextPage: new button(1000, 530, 180, 50, 'Next', () => infoPage++, "arrowright"),
         prevPage: new button(20, 530, 180, 50, 'Previous', () => infoPage--, "arrowleft")
     })
     
