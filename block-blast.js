@@ -225,9 +225,9 @@
     // let resumeButton = new button(500 - 110, 300, 200, 60, 'Cancel', resume, " ")
     // let resetButton = new button(500 + 110, 300, 200, 60, 'Restart', reset, 'enter')
     let infoButtons = new buttonGroup({
-        back: new button(20, 20, 200, 60, 'Back', back, "escape"),
-        nextPage: new button(980, 520, 200, 60, 'Next', () => infoPage++, "arrowright"),
-        prevPage: new button(20, 520, 200, 60, 'Previous', () => infoPage--, "arrowleft")
+        back: new button(20, 20, 180, 50, 'Back', back, "escape"),
+        nextPage: new button(980, 550, 180, 50, 'Next', () => infoPage++, "arrowright"),
+        prevPage: new button(20, 530, 180, 50, 'Previous', () => infoPage--, "arrowleft")
     })
     
     let currentScene = GAME_SCENE_NAME
@@ -2165,7 +2165,8 @@
         ctx.textAlign = 'center'
         ctx.fillText('INFORMATION', VIRTUAL_WIDTH / 2, 50)
         // Subtitle
-        ctx.fillText('High Score: ' + highScore, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 50)
+        ctx.font = '40px system-ui, sans-serif'
+        ctx.fillText('High Score: ' + highScore, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 30)
 
         // Information
         ctx.font = '20px system-ui, sans-serif'
