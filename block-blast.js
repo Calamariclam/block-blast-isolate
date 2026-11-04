@@ -124,47 +124,6 @@
         BLOCKING_BLOCK_WEIGHT + 
         RAINBOW_BLOCK_WEIGHT
 
-    /* --- INFO MENU STUFF -- */
-    const X_MARGIN = 50
-    const Y_MARGIN = 80
-    const INFO_ROWS = 5
-    const INFO_COLS = 4
-    const X_SPACING = (VIRTUAL_WIDTH - X_MARGIN * 2) / INFO_COLS
-    const Y_SPACING = (VIRTUAL_HEIGHT - Y_MARGIN * 2) / INFO_ROWS
-    const INFO_BLOCKS = [
-        new Block(X_MARGIN, Y_MARGIN, BLOCK_SIZE, BLOCK_SIZE),
-        new Block(X_MARGIN, Y_MARGIN + Y_SPACING, BLOCK_SIZE, BLOCK_SIZE),
-        new Block(X_MARGIN, Y_MARGIN + Y_SPACING * 2, BLOCK_SIZE, BLOCK_SIZE),
-        new Block(X_MARGIN, Y_MARGIN + Y_SPACING * 3, BLOCK_SIZE, BLOCK_SIZE),
-        new Block(X_MARGIN, Y_MARGIN + Y_SPACING * 4, BLOCK_SIZE, BLOCK_SIZE),
-        new Block(X_MARGIN + X_SPACING, Y_MARGIN, BLOCK_SIZE, BLOCK_SIZE),
-        new Block(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING, BLOCK_SIZE, BLOCK_SIZE),
-        new Block(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING * 2, BLOCK_SIZE, BLOCK_SIZE),
-        new Block(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING * 3, BLOCK_SIZE, BLOCK_SIZE),
-        new Block(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING * 4, BLOCK_SIZE, BLOCK_SIZE),
-    ]
-    INFO_BLOCKS[0].type = 'normal'
-    INFO_BLOCKS[1].type = 'projectile'
-    INFO_BLOCKS[2].type = 'bomb'
-    INFO_BLOCKS[3].type = 'piercing'
-    INFO_BLOCKS[4].type = 'diamond'
-    INFO_BLOCKS[5].type = 'pink'
-    INFO_BLOCKS[6].type = 'blocking'
-    INFO_BLOCKS[7].type = 'rainbow'
-    INFO_BLOCKS[8].type = 'mitosis'
-    INFO_BLOCKS[9].type = 'explode'
-
-    const INFO_BALLS = [//x, y, radius, type
-        new Ball(X_MARGIN + X_SPACING * 2, Y_MARGIN, BALL_RADIUS, 'normal'),
-        new Ball(X_MARGIN + X_SPACING * 2, Y_MARGIN + Y_SPACING, BALL_RADIUS, 'projectile'),
-        new Ball(X_MARGIN + X_SPACING * 2, Y_MARGIN + Y_SPACING * 2, BALL_RADIUS, 'bomb'),
-        new Ball(X_MARGIN + X_SPACING * 2, Y_MARGIN + Y_SPACING * 3, BALL_RADIUS, 'piercing'),
-        new Ball(X_MARGIN + X_SPACING * 2, Y_MARGIN + Y_SPACING * 4, BALL_RADIUS, 'diamond'),
-        new Ball(X_MARGIN + X_SPACING * 3, Y_MARGIN, BALL_RADIUS, 'pink'),
-        new Ball(X_MARGIN + X_SPACING * 3, Y_MARGIN + Y_SPACING, BALL_RADIUS, 'blocking'),
-        new Ball(X_MARGIN + X_SPACING * 3, Y_MARGIN + Y_SPACING * 2, BALL_RADIUS, 'rainbow'),
-    ]
-
     /* --- BUTTON --- */
     function hotkey(key, effect){
         if(releasedKeys[key]){
@@ -427,6 +386,47 @@
         lastTime = performance.now()
         requestAnimationFrame(gameLoop)
     })
+
+    /* --- INFO MENU SETUP -- */
+    const X_MARGIN = 50
+    const Y_MARGIN = 80
+    const INFO_ROWS = 5
+    const INFO_COLS = 4
+    const X_SPACING = (VIRTUAL_WIDTH - X_MARGIN * 2) / INFO_COLS
+    const Y_SPACING = (VIRTUAL_HEIGHT - Y_MARGIN * 2) / INFO_ROWS
+    const INFO_BLOCKS = [
+        new Block(X_MARGIN, Y_MARGIN, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN, Y_MARGIN + Y_SPACING, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN, Y_MARGIN + Y_SPACING * 2, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN, Y_MARGIN + Y_SPACING * 3, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN, Y_MARGIN + Y_SPACING * 4, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN + X_SPACING, Y_MARGIN, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING * 2, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING * 3, BLOCK_SIZE, BLOCK_SIZE),
+        new Block(X_MARGIN + X_SPACING, Y_MARGIN + Y_SPACING * 4, BLOCK_SIZE, BLOCK_SIZE),
+    ]
+    INFO_BLOCKS[0].type = 'normal'
+    INFO_BLOCKS[1].type = 'projectile'
+    INFO_BLOCKS[2].type = 'bomb'
+    INFO_BLOCKS[3].type = 'piercing'
+    INFO_BLOCKS[4].type = 'diamond'
+    INFO_BLOCKS[5].type = 'pink'
+    INFO_BLOCKS[6].type = 'blocking'
+    INFO_BLOCKS[7].type = 'rainbow'
+    INFO_BLOCKS[8].type = 'mitosis'
+    INFO_BLOCKS[9].type = 'explode'
+
+    const INFO_BALLS = [//x, y, radius, type
+        new Ball(X_MARGIN + X_SPACING * 2, Y_MARGIN, BALL_RADIUS, 'normal'),
+        new Ball(X_MARGIN + X_SPACING * 2, Y_MARGIN + Y_SPACING, BALL_RADIUS, 'projectile'),
+        new Ball(X_MARGIN + X_SPACING * 2, Y_MARGIN + Y_SPACING * 2, BALL_RADIUS, 'bomb'),
+        new Ball(X_MARGIN + X_SPACING * 2, Y_MARGIN + Y_SPACING * 3, BALL_RADIUS, 'piercing'),
+        new Ball(X_MARGIN + X_SPACING * 2, Y_MARGIN + Y_SPACING * 4, BALL_RADIUS, 'diamond'),
+        new Ball(X_MARGIN + X_SPACING * 3, Y_MARGIN, BALL_RADIUS, 'pink'),
+        new Ball(X_MARGIN + X_SPACING * 3, Y_MARGIN + Y_SPACING, BALL_RADIUS, 'blocking'),
+        new Ball(X_MARGIN + X_SPACING * 3, Y_MARGIN + Y_SPACING * 2, BALL_RADIUS, 'rainbow'),
+    ]
 
     /* --- USER INPUT HANDLING --- */
     let mousePosition = { x: 0, y: 0 }
