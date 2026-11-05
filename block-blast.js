@@ -1752,7 +1752,7 @@
                         if(superPaddle.timer > 0){ //If it's already on, skip the charging phase
                             superPaddle.timer = SUPER_TIMER_MAX - SUPER_DURATIONS[0]
                             // create pseudo rainbow balls
-                            for (let i = 0; i < 4; i++) {
+                            for (let i = 0; i < 3; i++) {
                                 const angle = generateAngle(MIN_BOUNCE_ANGLE) // Could be adjusted
                                 const sBall = new Ball(
                                     paddle.x,
@@ -1820,6 +1820,19 @@
                     paddle.h += SUPER_BONUS
                     if(superPaddle.timer > 0){ //If it's already on, skip the charging phase
                         superPaddle.timer = SUPER_TIMER_MAX - SUPER_DURATIONS[0]
+                        // create pseudo rainbow balls
+                        for (let i = 0; i < 3; i++) {
+                            const angle = generateAngle(MIN_BOUNCE_ANGLE) // Could be adjusted
+                            const sBall = new Ball(
+                                paddle.x,
+                                paddle.y + paddle.h / 2,
+                                BALL_RADIUS,
+                                'pseudoRainbow',
+                            )
+                            sBall.vx = BALL_SPEED * Math.cos(angle)
+                            sBall.vy = BALL_SPEED * Math.sin(angle)
+                            balls.push(sBall)
+                        }
                     }else{
                         superPaddle.timer = SUPER_TIMER_MAX
                     }
@@ -2288,7 +2301,7 @@
                 textBlock('A ball that explodes on impact with a block, destroying blocks within ' + BOMB_EXPLOSION_RADIUS + 'px. The bomb is destroyed instead of bouncing back.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD, TW, LB)
                 textBlock('A ball that can pierce and destroy ' + PIERCING_BLOCK_LIMIT + ' blocks before bouncing back. Recharges when hit by the Paddle.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 3+ LD, TW, LB)
                 textBlock('A collectable that extends your paddle by ' + DIAMOND_DAMAGE + 'px and gives 1-2 score when collected. Gives a bonus Diamond Paddle length instead of extending the main Paddle.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 4 + LD, TW, LB)
-                textBlock('A collectable that creates an extra Pink Paddle that moves the opposite way from your main Paddle. The Pink Paddle ignores projectiles and can only collect Pink Balls.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + LD, TW, LB)
+                textBlock('A collectable that creates an extra Pink Paddle that moves the opposite way from your main Paddle. Gives 5 score when collected. The Pink Paddle ignores projectiles and can only collect Pink Balls.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + LD, TW, LB)
                 textBlock('A large ball that blocks up to ' + BLOCKING_PROJECTILE_LIMIT + ' projectiles. Recharges when hit by the Paddle.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING + LD, TW, LB)
                 textBlock('A rare collectable ball that charges up and activates a rainbow laser, in addition to launching 3 Pseudo-Rainbow Balls. Also extends main Paddle by ' + SUPER_BONUS + 'px.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD, TW, LB)
                 textBlock('A Normal Ball that gets created when the rainbow effect is active, and gets destroyed when it ends.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3 + LD, TW, LB)
