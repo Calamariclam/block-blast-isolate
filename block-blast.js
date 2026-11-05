@@ -575,8 +575,8 @@
             if(ctx.measureText(line2).width > width){
                 ctx.fillText(line, x, y + down)
                 down += lineDown
-                line = ""
-                line2 = word
+                line2 = word + " "
+                line = line2
             }else{
                 line = line2
             }
