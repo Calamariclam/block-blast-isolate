@@ -1750,6 +1750,7 @@
                     }
                     if (ball.type === 'rainbow') {
                         paddle.h += SUPER_BONUS
+                        diamondPaddle.h = paddle.h + diamondPaddle.bonus
                         if(superPaddle.timer > 0){ //If it's already on, skip the charging phase
                             superPaddle.timer = SUPER_TIMER_MAX - SUPER_DURATIONS[0]
                             // create pseudo rainbow balls
