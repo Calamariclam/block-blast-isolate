@@ -2202,7 +2202,7 @@
         ctx.fillText('INFORMATION', VIRTUAL_WIDTH / 2, 50)
         // Subtitle
         ctx.font = '40px system-ui, sans-serif'
-        ctx.fillText('High Score: ' + highScore, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 30)
+        ctx.fillText('High Score: ' + highScore, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT - 50)
 
         // Information
         const SHIFT = 40
