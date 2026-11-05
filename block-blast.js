@@ -2247,7 +2247,7 @@
         // Information
         const SHIFT = 40 //shift text to the right
         const LD = 20 //shift description text down
-        const LB = 20 //line break distance
+        const LB = 15 //line break distance
         const TW = X_SPACING - SHIFT * 2 //text block width
         ctx.font = '20px system-ui, sans-serif'
         ctx.textAlign = 'left'
@@ -2268,7 +2268,7 @@
                 textBlock('Mitosis Block (' + pcent(MITOSIS_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3, TW, LB)
                 textBlock('Explosive Block (' + pcent(EXPLODE_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4, TW, LB)
                 ctx.fillStyle = COLORS.GRAY_L
-                ctx.font = '10px'
+                ctx.font = '10px system-ui, sans-serif'
                 textBlock('A regular block that breaks in one hit and gives one point like all other blocks.', X_MARGIN + SHIFT, Y_MARGIN + LD, TW, LB)
                 textBlock('Spawns 5 Projectiles when broken.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING + LD, TW, LB)
                 textBlock('Spawns a Bomb Ball when broken.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD, TW, LB)
@@ -2296,7 +2296,7 @@
                 textBlock('Pseudo-Normal Ball (moves ' + BALL_SPEED + 'px/s)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3, TW, LB)
                 textBlock('Pseudo-Rainbow Ball (moves ' + BALL_SPEED + 'px/s)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4, TW, LB)
                 ctx.fillStyle = COLORS.GRAY_L
-                ctx.font = '10px'
+                ctx.font = '10px system-ui, sans-serif'
                 textBlock('A regular ball that destroys blocks when hitting them and bounces off. If you run out of Normal Balls, you die.', X_MARGIN + SHIFT, Y_MARGIN + LD, TW, LB)
                 textBlock('A collectable ball that shrinks your paddle by ' + PROJECTILE_DAMAGE + 'px and gives -1 score when collected. If the paddle shrinks to 0, you die.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING + LD, TW, LB)
                 textBlock('A ball that explodes on impact with a block, destroying blocks within ' + BOMB_EXPLOSION_RADIUS + 'px. The bomb is destroyed instead of bouncing back.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD, TW, LB)
