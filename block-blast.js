@@ -42,7 +42,7 @@
     const SUPER_BONUS = 20 //Extra paddle height when collecting rainbow ball
     const SUPER_HEIGHT_FLUCTUATION = 0.1
     const SUPER_EXPLOSION_EXEMPT = ['normal', 'blocking', 'rainbow']
-    const SUPER_LASER_IGNORE = ['blocking', 'rainbow']
+    const SUPER_LASER_IGNORE = ['blocking', 'rainbow', 'pseudoBlocking']
 
     /* --- BALL/PROJECTILE PROPERTIES --- */
     const BALL_RADIUS = 10
@@ -655,8 +655,8 @@
         ball.vy = Math.sin(bounceAngle) * ball.speed
         ball.isDisabled = false
         ball.blocksHitCount = ball.type === 'piercing' ? 0 : Infinity // Reset block hit count
-        ball.ballsHitCount = ball.type === 'blocking' ? 0 : Infinity // Reset ball hit count
-        if(ball.type === 'blocking')
+        ball.ballsHitCount = (ball.type === 'blocking' || ball.type === 'pseudoBlocking') ? 0 : Infinity // Reset ball hit count
+        if(ball.type === 'blocking' || ball.type === 'pseudoBlocking')
             ball.r = BLOCKING_RADIUS_MAX
         if(snap){
             ball.x = thePaddle.x + thePaddle.w + ball.r + 0.1 // Reposition ball to prevent sticking
@@ -1141,7 +1141,7 @@
                         this.x + this.w / 2,
                         this.y + this.h / 2,
                         BLOCKING_RADIUS_MIN,
-                        'blocking',
+                        (superMode ? 'pseudoBlocking' : 'blocking'),
                         BLOCKING_SPEED,
                         true
                     )
@@ -1209,7 +1209,7 @@
             }
 
             // Normal and Bomb ball collision action
-            if (ball.type !== 'projectile' && ball.type !== 'diamond' && ball.type !== 'pink' && ball.type !== 'blocking' && !ball.isDisabled) {
+            if (ball.type !== 'projectile' && ball.type !== 'diamond' && ball.type !== 'pink' && ball.type !== 'blocking' && ball.type !== 'pseudoBlocking' && !ball.isDisabled) {
                 if (ball.type === 'bomb' && this.type !== 'mitosis') {
                     // Bomb explosion on impact
                     const bombCenterX = ball.x
@@ -1316,7 +1316,7 @@
             this.x += this.vx * dt
             this.y += this.vy * dt
 
-            if(this.type === 'blocking'){
+            if(this.type === 'blocking' || this.type === 'pseudoBlocking'){
                 if(this.isDisabled){
                     this.r = BLOCKING_RADIUS_MIN
                 } else {
@@ -1417,6 +1417,7 @@
                     ctx.fill()
                     break
                 case 'blocking':
+                case 'pseudoBlocking':
                     turn = this.vx * (performance.now() - this.spawnTime) / 24000
                     
                     if(this.isDisabled){
@@ -1464,7 +1465,7 @@
             if(this.isDisabled || !circleCircleColliding(this, ball)) {
                 return false
             }
-            if(!(this.type === 'blocking' && ball.type === 'projectile')) {
+            if(!((this.type === 'blocking' || this.type === 'pseudoBlocking') && ball.type === 'projectile')) {
                 return false
             } //this entire function is only meant for blocking-projectile interactions, but may need more in the future
 
@@ -1530,9 +1531,11 @@
 
             if(ball.type === 'projectile'){
                 score(1, 'rainbow')
-            }if(ball.type === 'diamond'){
+            }else if(ball.type === 'diamond'){
                 score(2, 'rainbow')
-            }if(ball.type === 'pseudoRainbow'){
+            }else if(ball.type === 'pseudoBlocking'){
+                score(10, 'rainbow')
+            }else if(ball.type === 'pseudoRainbow'){
                 //nothing
             }else{
                 score(5, 'rainbow')
@@ -2294,8 +2297,8 @@
                 textBlock('Pink Ball (moves ' + PINK_SPEED + 'px/s)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN, TW, LB)
                 textBlock('Blocking Ball (moves ' + BLOCKING_SPEED + 'px/s)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING, TW, LB)
                 textBlock('Rainbow Ball (moves ' + RAINBOW_SPEED + 'px/s)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 2, TW, LB)
-                textBlock('Pseudo-Normal Ball (moves ' + BALL_SPEED + 'px/s)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3, TW, LB)
-                textBlock('Pseudo-Rainbow Ball (moves ' + BALL_SPEED + 'px/s)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4, TW, LB)
+                textBlock('Pseudo-Balls', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3, TW, LB)
+                textBlock('Pseudo-Rainbow Ball', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4, TW, LB)
                 ctx.fillStyle = COLORS.GRAY_L
                 ctx.font = '10px system-ui, sans-serif'
                 textBlock('A regular ball that destroys blocks when hitting them and bounces off. If you run out of Normal Balls, you die.', X_MARGIN + SHIFT, Y_MARGIN + LD, TW, LB)
@@ -2306,7 +2309,7 @@
                 textBlock('A collectable that creates an extra Pink Paddle that moves the opposite way from your main Paddle. Gives 5 score when collected. The Pink Paddle ignores projectiles and can only collect Pink Balls.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + LD, TW, LB)
                 textBlock('A large ball that blocks up to ' + BLOCKING_PROJECTILE_LIMIT + ' projectiles. Recharges when hit by the Paddle.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING + LD, TW, LB)
                 textBlock('A rare collectable ball that charges up and activates a rainbow laser, in addition to launching 3 Pseudo-Rainbow Balls. Also extends main Paddle by ' + SUPER_BONUS + 'px.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD, TW, LB)
-                textBlock('A Normal Ball that gets created when the rainbow effect is active, and gets destroyed when it ends.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3 + LD, TW, LB)
+                textBlock('Pseudo-Balls are identical to the corresponding ball, but are created while the rainbow effect is active and destroyed when it ends.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3 + LD, TW, LB)
                 textBlock('A rainbow-colored Pseudo-Normal Ball.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4 + LD, TW, LB)
                 break;
         }
