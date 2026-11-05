@@ -2231,7 +2231,7 @@
                 ctx.fillText('Explosive Block (' + pcent(EXPLODE_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4)
                 ctx.fillStyle = COLORS.GRAY_L
                 ctx.font = '15px'
-                ctx.fillText('A regular block that breaks in one hit and gives one point like all other blocks.', X_MARGIN + SHIFT, Y_MARGIN + LD)
+                ctx.fillText('A regular block that breaks in one hit and gives one point\nlike all other blocks.', X_MARGIN + SHIFT, Y_MARGIN + LD)
                 ctx.fillText('Spawns 5 Projectiles when broken.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING + LD)
                 ctx.fillText('Spawns a Bomb Ball when broken.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD)
                 ctx.fillText('Spawns a Piercing Ball when broken.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 3 + LD)
@@ -2239,7 +2239,7 @@
                 ctx.fillText('Spawns a Pink Ball when broken.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + LD)
                 ctx.fillText('Spawns a Blocking Ball when broken.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING + LD)
                 ctx.fillText('Spawns a Rainbow Ball when broken.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD)
-                ctx.fillText('When destroyed, duplicates the ball that hit it. Does not duplicate explosions.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3 + LD)
+                ctx.fillText('When destroyed, duplicates the ball that hit it.\nDoes not duplicate explosions.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3 + LD)
                 ctx.fillText('Explodes when broken. Destroys all blocks within ' + EXPLODE_BLOCK_RADIUS + 'px.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4 + LD)
                 break;
             case 2: 
@@ -2259,15 +2259,15 @@
                 ctx.fillText('Pseudo-Rainbow Ball (moves ' + BALL_SPEED + 'px/s)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4)
                 ctx.fillStyle = COLORS.GRAY_L
                 ctx.font = '15px'
-                ctx.fillText('A regular ball that destroys blocks when hitting them and bounces off. If you run out of Normal Balls, you die.', X_MARGIN + SHIFT, Y_MARGIN + LD)
-                ctx.fillText('A collectable ball that shrinks your paddle by ' + PROJECTILE_DAMAGE + 'px and gives -1 score when collected. If the paddle shrinks to 0, you die.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING + LD)
-                ctx.fillText('A ball that explodes on impact with a block, destroying blocks within ' + BOMB_EXPLOSION_RADIUS + 'px. The bomb is destroyed instead of bouncing back.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD)
-                ctx.fillText('A ball that can pierce and destroy ' + PIERCING_BLOCK_LIMIT + ' blocks before bouncing back. Recharges when hit by the Paddle.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 3+ LD)
-                ctx.fillText('A collectable that extends your paddle by ' + DIAMOND_DAMAGE + 'px and gives 1-2 score when collected. Gives a bonus Diamond Paddle length instead of extending the main Paddle.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 4 + LD)
-                ctx.fillText('A collectable that creates an extra Pink Paddle that moves the opposite way from your main Paddle. The Pink Paddle ignores projectiles and can only collect Pink Balls.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + LD)
-                ctx.fillText('A large ball that blocks up to ' + BLOCKING_PROJECTILE_LIMIT + ' projectiles. Recharges when hit by the Paddle.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING + LD)
-                ctx.fillText('A rare collectable ball that charges up and activates a rainbow laser, in addition to launching 3 Pseudo-Rainbow Balls. Also extends main Paddle by ' + SUPER_BONUS + 'px.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD)
-                ctx.fillText('A Normal Ball that gets created when the rainbow effect is active, and gets destroyed when it ends.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3 + LD)
+                ctx.fillText('A regular ball that destroys blocks when hitting them and\nbounces off. If you run out of Normal Balls, you die.', X_MARGIN + SHIFT, Y_MARGIN + LD)
+                ctx.fillText('A collectable ball that shrinks your paddle by ' + PROJECTILE_DAMAGE + 'px and\ngives -1 score when collected. If the paddle shrinks to 0, you die.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING + LD)
+                ctx.fillText('A ball that explodes on impact with a block, destroying\nblocks within ' + BOMB_EXPLOSION_RADIUS + 'px. The bomb is destroyed instead of bouncing back.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD)
+                ctx.fillText('A ball that can pierce and destroy ' + PIERCING_BLOCK_LIMIT + ' blocks\nbefore bouncing back. Recharges when hit by the Paddle.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 3+ LD)
+                ctx.fillText('A collectable that extends your paddle by ' + DIAMOND_DAMAGE + 'px\nand gives 1-2 score when collected. Gives a bonus Diamond Paddle length instead of extending the main Paddle.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 4 + LD)
+                ctx.fillText('A collectable that creates an extra Pink Paddle that moves\nthe opposite way from your main Paddle. The Pink Paddle ignores projectiles and can only collect Pink Balls.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + LD)
+                ctx.fillText('A large ball that blocks up to ' + BLOCKING_PROJECTILE_LIMIT + ' projectiles.\nRecharges when hit by the Paddle.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING + LD)
+                ctx.fillText('A rare collectable ball that charges up and activates a\nrainbow laser, in addition to launching 3 Pseudo-Rainbow Balls. Also extends main Paddle by ' + SUPER_BONUS + 'px.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD)
+                ctx.fillText('A Normal Ball that gets created when the rainbow effect\nis active, and gets destroyed when it ends.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3 + LD)
                 ctx.fillText('A rainbow-colored Pseudo-Normal Ball.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4 + LD)
                 break;
         }
