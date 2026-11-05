@@ -576,6 +576,7 @@
                 ctx.fillText(line, x, y + down)
                 down += lineDown
                 line = ""
+                line2 = ""
             }else{
                 line = line2
             }
