@@ -558,9 +558,31 @@
         let text = ((amount >= 0) ? "+" : "") + `${amount}`
         floatyTexts.push(new floatyText(text, VIRTUAL_WIDTH * 0.4 + textWidth/2, 40, 30, color, 'score'))
     }
+    /* --- TEXT FUNCTIONS --- */
     // Helper function that turns a number into a percent value (string)
     function pcent(n){
         return (n * 100).toFixed(2) + "%"
+    }
+    // Helper for text wrap
+    function textBlock(text, x, y, width, lineDown){
+        //why the hell does ctx not have line breaks?
+        const words = text.split(" ")
+        let down = 0
+        let line = ""
+        let line2 = ""
+        for(word of words){
+            line2 += word + " "
+            if(ctx.measureText(line2).width > width){
+                ctx.fillText(line, x, y + down)
+                down += lineDown
+                line = ""
+            }else{
+                line = line2
+            }
+        }
+        if(line.length){
+            ctx.fillText(line, x, y + down)
+        }
     }
 
     /* --- GAME OBJECTS --- */
@@ -2211,6 +2233,8 @@
         // Information
         const SHIFT = 40 //shift text to the right
         const LD = 20 //shift description text down
+        const LB = 20 //line break distance
+        const TW = X_SPACING - SHIFT * 2 //text block width
         ctx.font = '20px system-ui, sans-serif'
         ctx.textAlign = 'left'
         switch(infoPage){
@@ -2219,56 +2243,56 @@
                     block.display()
                 }
                 ctx.fillStyle = COLORS.WHITE
-                ctx.fillText('Normal Block (' + pcent(1 - PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + SHIFT, Y_MARGIN, )
-                ctx.fillText('Projectile Block (' + pcent(PROJECTILE_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING)
-                ctx.fillText('Bomb Block (' + pcent(BOMB_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 2)
-                ctx.fillText('Piercing Block (' + pcent(PIERCING_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 3)
-                ctx.fillText('Diamond Block (' + pcent(DIAMOND_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 4)
-                ctx.fillText('Pink Block (' + pcent(PINK_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN)
-                ctx.fillText('Blocking Block (' + pcent(BLOCKING_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING)
-                ctx.fillText('Rainbow Block (' + pcent(RAINBOW_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 2)
-                ctx.fillText('Mitosis Block (' + pcent(MITOSIS_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3)
-                ctx.fillText('Explosive Block (' + pcent(EXPLODE_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4)
+                textBlock('Normal Block (' + pcent(1 - PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + SHIFT, Y_MARGIN, TW, LB)
+                textBlock('Projectile Block (' + pcent(PROJECTILE_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING, TW, LB)
+                textBlock('Bomb Block (' + pcent(BOMB_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 2, TW, LB)
+                textBlock('Piercing Block (' + pcent(PIERCING_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 3, TW, LB)
+                textBlock('Diamond Block (' + pcent(DIAMOND_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 4, TW, LB)
+                textBlock('Pink Block (' + pcent(PINK_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN, TW, LB)
+                textBlock('Blocking Block (' + pcent(BLOCKING_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING, TW, LB)
+                textBlock('Rainbow Block (' + pcent(RAINBOW_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 2, TW, LB)
+                textBlock('Mitosis Block (' + pcent(MITOSIS_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3, TW, LB)
+                textBlock('Explosive Block (' + pcent(EXPLODE_BLOCK_WEIGHT/TOTAL_SPECIAL_WEIGHT * PERCENT_OF_BLOCKS_THAT_ARE_SPECIAL) + ' of blocks)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4, TW, LB)
                 ctx.fillStyle = COLORS.GRAY_L
                 ctx.font = '15px'
-                ctx.fillText('A regular block that breaks in one hit and gives one point\nlike all other blocks.', X_MARGIN + SHIFT, Y_MARGIN + LD)
-                ctx.fillText('Spawns 5 Projectiles when broken.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING + LD)
-                ctx.fillText('Spawns a Bomb Ball when broken.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD)
-                ctx.fillText('Spawns a Piercing Ball when broken.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 3 + LD)
-                ctx.fillText('Spawns 2 Diamonds when broken.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 4 + LD)
-                ctx.fillText('Spawns a Pink Ball when broken.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + LD)
-                ctx.fillText('Spawns a Blocking Ball when broken.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING + LD)
-                ctx.fillText('Spawns a Rainbow Ball when broken.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD)
-                ctx.fillText('When destroyed, duplicates the ball that hit it.\nDoes not duplicate explosions.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3 + LD)
-                ctx.fillText('Explodes when broken. Destroys all blocks within ' + EXPLODE_BLOCK_RADIUS + 'px.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4 + LD)
+                textBlock('A regular block that breaks in one hit and gives one point like all other blocks.', X_MARGIN + SHIFT, Y_MARGIN + LD, TW, LB)
+                textBlock('Spawns 5 Projectiles when broken.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING + LD, TW, LB)
+                textBlock('Spawns a Bomb Ball when broken.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD, TW, LB)
+                textBlock('Spawns a Piercing Ball when broken.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 3 + LD, TW, LB)
+                textBlock('Spawns 2 Diamonds when broken.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 4 + LD, TW, LB)
+                textBlock('Spawns a Pink Ball when broken.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + LD, TW, LB)
+                textBlock('Spawns a Blocking Ball when broken.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING + LD, TW, LB)
+                textBlock('Spawns a Rainbow Ball when broken.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD, TW, LB)
+                textBlock('When destroyed, duplicates the ball that hit it. Does not duplicate explosions.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3 + LD, TW, LB)
+                textBlock('Explodes when broken. Destroys all blocks within ' + EXPLODE_BLOCK_RADIUS + 'px.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4 + LD, TW, LB)
                 break;
             case 2: 
                 for(const ball of INFO_BALLS){
                     ball.display()
                 }
                 ctx.fillStyle = COLORS.WHITE
-                ctx.fillText('Normal Ball (moves ' + BALL_SPEED + 'px/s)', X_MARGIN + SHIFT, Y_MARGIN)
-                ctx.fillText('Projectile (moves ' + PROJECTILE_SPEED + 'px/s)', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING)
-                ctx.fillText('Bomb Ball (moves ' + PROJECTILE_SPEED + 'px/s)', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 2)
-                ctx.fillText('Piercing Ball (moves ' + BALL_SPEED + 'px/s)', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 3)
-                ctx.fillText('Diamond (moves ' + DIAMOND_SPEED + 'px/s)', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 4)
-                ctx.fillText('Pink Ball (moves ' + PINK_SPEED + 'px/s)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN)
-                ctx.fillText('Blocking Ball (moves ' + BLOCKING_SPEED + 'px/s)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING)
-                ctx.fillText('Rainbow Ball (moves ' + RAINBOW_SPEED + 'px/s)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 2)
-                ctx.fillText('Pseudo-Normal Ball (moves ' + BALL_SPEED + 'px/s)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3)
-                ctx.fillText('Pseudo-Rainbow Ball (moves ' + BALL_SPEED + 'px/s)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4)
+                textBlock('Normal Ball (moves ' + BALL_SPEED + 'px/s)', X_MARGIN + SHIFT, Y_MARGIN, TW, LB)
+                textBlock('Projectile (moves ' + PROJECTILE_SPEED + 'px/s)', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING, TW, LB)
+                textBlock('Bomb Ball (moves ' + PROJECTILE_SPEED + 'px/s)', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 2, TW, LB)
+                textBlock('Piercing Ball (moves ' + BALL_SPEED + 'px/s)', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 3, TW, LB)
+                textBlock('Diamond (moves ' + DIAMOND_SPEED + 'px/s)', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 4, TW, LB)
+                textBlock('Pink Ball (moves ' + PINK_SPEED + 'px/s)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN, TW, LB)
+                textBlock('Blocking Ball (moves ' + BLOCKING_SPEED + 'px/s)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING, TW, LB)
+                textBlock('Rainbow Ball (moves ' + RAINBOW_SPEED + 'px/s)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 2, TW, LB)
+                textBlock('Pseudo-Normal Ball (moves ' + BALL_SPEED + 'px/s)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3, TW, LB)
+                textBlock('Pseudo-Rainbow Ball (moves ' + BALL_SPEED + 'px/s)', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4, TW, LB)
                 ctx.fillStyle = COLORS.GRAY_L
                 ctx.font = '15px'
-                ctx.fillText('A regular ball that destroys blocks when hitting them and\nbounces off. If you run out of Normal Balls, you die.', X_MARGIN + SHIFT, Y_MARGIN + LD)
-                ctx.fillText('A collectable ball that shrinks your paddle by ' + PROJECTILE_DAMAGE + 'px and\ngives -1 score when collected. If the paddle shrinks to 0, you die.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING + LD)
-                ctx.fillText('A ball that explodes on impact with a block, destroying\nblocks within ' + BOMB_EXPLOSION_RADIUS + 'px. The bomb is destroyed instead of bouncing back.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD)
-                ctx.fillText('A ball that can pierce and destroy ' + PIERCING_BLOCK_LIMIT + ' blocks\nbefore bouncing back. Recharges when hit by the Paddle.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 3+ LD)
-                ctx.fillText('A collectable that extends your paddle by ' + DIAMOND_DAMAGE + 'px\nand gives 1-2 score when collected. Gives a bonus Diamond Paddle length instead of extending the main Paddle.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 4 + LD)
-                ctx.fillText('A collectable that creates an extra Pink Paddle that moves\nthe opposite way from your main Paddle. The Pink Paddle ignores projectiles and can only collect Pink Balls.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + LD)
-                ctx.fillText('A large ball that blocks up to ' + BLOCKING_PROJECTILE_LIMIT + ' projectiles.\nRecharges when hit by the Paddle.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING + LD)
-                ctx.fillText('A rare collectable ball that charges up and activates a\nrainbow laser, in addition to launching 3 Pseudo-Rainbow Balls. Also extends main Paddle by ' + SUPER_BONUS + 'px.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD)
-                ctx.fillText('A Normal Ball that gets created when the rainbow effect\nis active, and gets destroyed when it ends.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3 + LD)
-                ctx.fillText('A rainbow-colored Pseudo-Normal Ball.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4 + LD)
+                textBlock('A regular ball that destroys blocks when hitting them and bounces off. If you run out of Normal Balls, you die.', X_MARGIN + SHIFT, Y_MARGIN + LD, TW, LB)
+                textBlock('A collectable ball that shrinks your paddle by ' + PROJECTILE_DAMAGE + 'px and gives -1 score when collected. If the paddle shrinks to 0, you die.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING + LD, TW, LB)
+                textBlock('A ball that explodes on impact with a block, destroying blocks within ' + BOMB_EXPLOSION_RADIUS + 'px. The bomb is destroyed instead of bouncing back.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD, TW, LB)
+                textBlock('A ball that can pierce and destroy ' + PIERCING_BLOCK_LIMIT + ' blocks before bouncing back. Recharges when hit by the Paddle.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 3+ LD, TW, LB)
+                textBlock('A collectable that extends your paddle by ' + DIAMOND_DAMAGE + 'px and gives 1-2 score when collected. Gives a bonus Diamond Paddle length instead of extending the main Paddle.', X_MARGIN + SHIFT, Y_MARGIN + Y_SPACING * 4 + LD, TW, LB)
+                textBlock('A collectable that creates an extra Pink Paddle that moves the opposite way from your main Paddle. The Pink Paddle ignores projectiles and can only collect Pink Balls.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + LD, TW, LB)
+                textBlock('A large ball that blocks up to ' + BLOCKING_PROJECTILE_LIMIT + ' projectiles. Recharges when hit by the Paddle.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING + LD, TW, LB)
+                textBlock('A rare collectable ball that charges up and activates a rainbow laser, in addition to launching 3 Pseudo-Rainbow Balls. Also extends main Paddle by ' + SUPER_BONUS + 'px.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 2 + LD, TW, LB)
+                textBlock('A Normal Ball that gets created when the rainbow effect is active, and gets destroyed when it ends.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 3 + LD, TW, LB)
+                textBlock('A rainbow-colored Pseudo-Normal Ball.', X_MARGIN + X_SPACING + SHIFT, Y_MARGIN + Y_SPACING * 4 + LD, TW, LB)
                 break;
         }
       
